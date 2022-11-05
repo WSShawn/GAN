@@ -16,3 +16,10 @@ The dataset used in our study is the Celeba Dataset. It represents a collection 
 
 ### Convolution
 
+The object at the basis of the convolution process is the kernel. Given the 3-dimensional characterisation of our data (height, width and values of the RGB channel), the kernel can be initialized as 3-dimensional, with the 3rd dimension representing the number of filters applied, or 2-dimensional, meaning that the same filter will be applied to each of the 3 color channels. The values that constitute the kernel are randomly initialized and will be further optimized according to the accuracy and loss of the convolution process.
+
+The kernel is then passed along the image, row by row and column by column. A dot product is applied between the kernel and the surface on the image on which it slides. The result is part of the output matrix.
+
+
+![convolution1](https://user-images.githubusercontent.com/114659655/200131876-4e9d595c-9ff9-4f57-9c58-b13382168a12.png)
+
