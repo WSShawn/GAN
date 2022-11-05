@@ -25,3 +25,4 @@ The kernel is then passed along the image, row by row and column by column, unti
 ![convolution1](https://user-images.githubusercontent.com/114659655/200131876-4e9d595c-9ff9-4f57-9c58-b13382168a12.png)
 
 
+
