@@ -35,3 +35,8 @@ The layers are interconnected : the second layer takes as input the output from 
 
 Throughout the implementation of our neural networks, we wil use the Pytorch framework. Both the Generator and the Discriminator are Neural Network Object Types. They are defined as classes who inherit from the nn.Module in Pytorch. The structure of both networks will be defined using the __init__() method and applied to computation using the forward() method.
 
+
+###Generator
+
+The Generator Neural Network's initial input is represented by a latent noise vector.
+
