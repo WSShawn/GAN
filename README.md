@@ -24,5 +24,12 @@ The kernel is then passed along the image, row by row and column by column, unti
 
 ![convolution1](https://user-images.githubusercontent.com/114659655/200131876-4e9d595c-9ff9-4f57-9c58-b13382168a12.png)
 
+### Convolutional Layers
 
+The neural networks we are going to build are going to be formed of Convolutional Layers. Convolutional Layers are meant to process data that is correlated in space. The output of each convolutional layer is a feature map, which corresponds to a spatial projection where certain features are exposed, which have previously been found by the convolutional layer.
+
+
+## Generator and Discriminator
+
+Throughout the implementation of our neural networks, we wil use the Pytorch framework. Both the Generator and the Discriminator are Neural Network Object Types. They are defined as classes who inherit from the nn.Module in Pytorch. The structure of both networks will be defined using the __init__() method and applied to computation using the forward() method.
 
