@@ -35,8 +35,11 @@ The layers are interconnected : the second layer takes as input the output from 
 
 Throughout the implementation of our neural networks, we wil use the Pytorch framework. Both the Generator and the Discriminator are Neural Network Object Types. They are defined as classes who inherit from the nn.Module in Pytorch. The structure of both networks will be defined using the __init__() method and applied to computation using the forward() method.
 
+###Weights initialization
+
+In the case of Convolutional Neural Networks, weights represent the multiplicative values present in the kernel. A 3x3 kernel will therefore have 9 weights.
 
 ###Generator
 
-The Generator Neural Network's initial input is represented by a latent noise vector.
+The Generator Neural Network's initial input is represented by a latent 1-dimensional noise vector. The length of the latent vector can be chosen artibtrarily, but we will choose 100 for our example.
 
