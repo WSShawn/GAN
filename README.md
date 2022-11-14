@@ -41,5 +41,9 @@ In the case of Convolutional Neural Networks, weights represent the multiplicati
 
 ###Generator
 
-The Generator Neural Network's initial input is represented by a latent 1-dimensional noise vector. The length of the latent vector can be chosen artibtrarily, but we will choose 100 for our example.
+The Generator Neural Network's initial input is represented by a latent 1-dimensional noise vector. The length of the latent vector is fixed and can be chosen artibtrarily, but we will choose 100 for our example. We will draw the latent vector from the Gaussian distribution.
+
+Convolution is then applied by sliding the kernel along the noise vector. We need to pass from a 1x100 dimensional vector to the size of the images in the dataset (3x64x64), the convolution applied is transposed. Each transposed convolution will produce a feature map inside the generator.
+
+Batch Normalization :
 
