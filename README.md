@@ -50,3 +50,16 @@ Convolution is then applied by sliding the kernel along the noise vector. We nee
 
 Batch Normalization : After the Convolutional Layer, a batch normalization layer is implemented. It normalizes data at batch level so that it can be passed through the activation function afterwards. We are applying Batch Normalization to 2d images using BatchNorm2d().
 
+##Weights initializiation
+
+Model weights will be initialized according to the paper by Radford, Metz and Chintala (2015). They are normally distributed with mean 0 and standard deviation 0.02.
+
+'''
+def weights_initialization(model):
+  for module in model.modules():
+    if module == nn.Conv2d or module == nn.ConvTranspose2d or module == nn.BatchNorm2d :
+      nn.init.normal_(model.weight.data, 0.0, 0.02)
+'''
+
+
+
