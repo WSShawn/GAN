@@ -126,4 +126,13 @@ The Generator is trained to minimize the loss with respect to the fake images it
 
 
 
+#Extension : WGAN- Wasserstein Generative Adversarial Networks
+
+We have seen the principles of GANs and the functioning of DCGANS. We are now focusing on Wasserstein Generative Adversarial Networks
+
+
+## Introduction and concept
+
+Firstly let us understand why such variations of the traditional GANs have been created. While a very performant tool, GANs can be subject to convergence failure (failure to produce optimal results) and mode collapse (model failing to produce unique results and repeating a similar pattern or quality). The advantage of WGANs is that they solve this issue and they offer higher stability for the training in comparison to traditional GANs.
+
 
