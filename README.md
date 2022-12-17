@@ -54,12 +54,13 @@ Batch Normalization : After the Convolutional Layer, a batch normalization layer
 
 Model weights will be initialized according to the paper by Radford, Metz and Chintala (2015). They are normally distributed with mean 0 and standard deviation 0.02.
 
-'''
+```
+
 def weights_initialization(model):
   for module in model.modules():
     if module == nn.Conv2d or module == nn.ConvTranspose2d or module == nn.BatchNorm2d :
       nn.init.normal_(model.weight.data, 0.0, 0.02)
-'''
+```
 
 
 
