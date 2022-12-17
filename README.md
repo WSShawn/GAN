@@ -35,9 +35,6 @@ The layers are interconnected : the second layer takes as input the output from 
 
 Throughout the implementation of our neural networks, we wil use the Pytorch framework. Both the Generator and the Discriminator are Neural Network Object Types. They are defined as classes who inherit from the nn.Module in Pytorch. The structure of both networks will be defined using the __init__() method and applied to computation using the forward() method.
 
-###Weights initialization
-
-In the case of Convolutional Neural Networks, weights represent the multiplicative values present in the kernel. A 3x3 kernel will therefore have 9 weights.
 
 ###Generator
 
@@ -50,17 +47,30 @@ Convolution is then applied by sliding the kernel along the noise vector. We nee
 
 Batch Normalization : After the Convolutional Layer, a batch normalization layer is implemented. It normalizes data at batch level so that it can be passed through the activation function afterwards. We are applying Batch Normalization to 2d images using BatchNorm2d().
 
-##Weights initializiation
+## Weights initializiation
 
-Model weights will be initialized according to the paper by Radford, Metz and Chintala (2015). They are normally distributed with mean 0 and standard deviation 0.02.
+Model weights will be initialized according to the paper by Radford, Metz and Chintala (2015). They are normally distributed with mean 0 and standard deviation 0.02. The function weights_initialization takes as input one of the 2 models and transforms input data within the network's hidden layers, respectively the Convolutional, Transposed Convolutional and Batch Normalization Layer.
 
 ```
-
 def weights_initialization(model):
   for module in model.modules():
     if module == nn.Conv2d or module == nn.ConvTranspose2d or module == nn.BatchNorm2d :
       nn.init.normal_(model.weight.data, 0.0, 0.02)
 ```
+
+
+# Training setup 
+
+After the Discriminator and the Generator have been initialized given the hyperparameters defined at the beginning of the code (number of channels and number of features for the discriminator and size of the latent vector, the number of channels and the number of features for the generator), weights are initialized. We use the Binary Cross Entropy loss function and Adam Optimizer for both Networks. In order to understand the choice for these characteristics, we have to look at the principle of interaction between the networks :
+
+![image](https://user-images.githubusercontent.com/114659655/208265282-205b6375-2370-408f-998e-27ed7c864ba5.png)
+
+Here D(G(z)) is the probability that the output of the Generator G is classified as a real image. Let us look now at the Binary Cross Entropy Loss : 
+
+![image](https://user-images.githubusercontent.com/114659655/208265308-6345ba98-1718-48be-9d65-2294af4cc528.png)
+
+It can be noticed that the 2 functions look alike. Indeed, the value of y can be dictated so as to correspond to the objective function of each of the 2 networks. For the Generator, we are looking for min log(1 - D(G(z))) which is equivalent to max log(D(G(z)), whereas for the Discriminator we are looking for max log(D(x)) + log(1-D(G(z)). 
+
 
 
 
