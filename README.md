@@ -133,6 +133,14 @@ We have seen the principles of GANs and the functioning of DCGANS. We are now fo
 
 ## Introduction and concept
 
-Firstly let us understand why such variations of the traditional GANs have been created. While a very performant tool, GANs can be subject to convergence failure (failure to produce optimal results) and mode collapse (model failing to produce unique results and repeating a similar pattern or quality). The advantage of WGANs is that they solve this issue and they offer higher stability for the training in comparison to traditional GANs.
+Firstly let us understand why such variations of the traditional GANs have been created. While a very performant tool, GANs can be subject to convergence failure (failure to produce optimal results) and mode collapse (model failing to produce unique results and repeating a similar pattern, quality or classes). The advantage of WGANs is that they solve this issue and they offer higher stability for the training in comparison to traditional GANs. Another advantage is that the value of the global loss is meaningful, in the sense that it gives us a termination cirterion.
+
+We have seen that the main idea in GAN implementation is that we have 2 probability distributions, one for the Generator Pg and one for the Discriminator Pd. The goal is to have similar probability distributions so that generated images look realistic. The issue here is therefore how we define this similarity, or the "distance" between the 2 distributions. There are multiple choices :
+
+*
+*
+*
+
+
 
 
