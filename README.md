@@ -36,16 +36,27 @@ The layers are interconnected : the second layer takes as input the output from 
 Throughout the implementation of our neural networks, we wil use the Pytorch framework. Both the Generator and the Discriminator are Neural Network Object Types. They are defined as classes who inherit from the nn.Module in Pytorch. The structure of both networks will be defined using the __init__() method and applied to computation using the forward() method.
 
 
-###Generator
+### Generator
 
-The Generator Neural Network's initial input is represented by a latent 1-dimensional noise vector. The length of the latent vector is fixed and can be chosen artibtrarily, but we will choose 100 for our example. We will draw the latent vector from the Gaussian distribution. The dimension of the latent vector will represent the number of channels of the input of the first layer of the network. 
+The Generator Neural Network's initial input is represented by a latent 1-dimensional noise vector. The length of the latent vector is fixed and can be chosen arbitrarily, but we will choose 100 for our example. We will draw the latent vector from the Gaussian distribution. The dimension of the latent vector will represent the number of channels of the input of the first layer of the network. 
 
 ![1_ULAGAYoGGr5eEB2377ArYA](https://user-images.githubusercontent.com/114659655/201658929-c53960f3-1d5d-4e33-b6c6-f6f88d484100.png)
 
 
-Convolution is then applied by sliding the kernel along the noise vector. We need to pass from a 1x100 dimensional vector to the size of the images in the dataset (3x64x64), the convolution applied is transposed. Each transposed convolution will produce a feature map inside the generator.
+Transposed convolution is then applied by sliding the kernel along the noise vector. We need to pass from a 1x100 dimensional vector to the size of the images in the dataset (3x64x64), the convolution applied is transposed in order to upsample the data. Each transposed convolution will produce a feature map inside the generator.
 
 Batch Normalization : After the Convolutional Layer, a batch normalization layer is implemented. It normalizes data at batch level so that it can be passed through the activation function afterwards. We are applying Batch Normalization to 2d images using BatchNorm2d().
+
+### Discriminator
+
+The input of the discriminator is an image in its intial dimensions. The image is processed through Conv2d layers, as the data has to be downsampled. As mentioned before, the filter (Kernel) passes through the set of pixels of the image. Values of the corresponding pixels are multiplied together then summed up to result in the convolved feature. 
+
+The last convolution layer of the discriminator is flattened and passed through a sigmoid function. The Discriminator will therefore output the label of the image, 0 corresponding for 'fake' and 1 corresponding for 'real. The following image illustrates the architecture of the Discriminator Network.
+
+![image](https://user-images.githubusercontent.com/114659655/208300570-d18620da-22cf-4d00-a430-b6293ade3069.png)
+
+
+
 
 ## Weights initializiation
 
@@ -135,12 +146,7 @@ We have seen the principles of GANs and the functioning of DCGANS. We are now fo
 
 Firstly let us understand why such variations of the traditional GANs have been created. While a very performant tool, GANs can be subject to convergence failure (failure to produce optimal results) and mode collapse (model failing to produce unique results and repeating a similar pattern, quality or classes). The advantage of WGANs is that they solve this issue and they offer higher stability for the training in comparison to traditional GANs. Another advantage is that the value of the global loss is meaningful, in the sense that it gives us a termination cirterion.
 
-We have seen that the main idea in GAN implementation is that we have 2 probability distributions, one for the Generator Pg and one for the Discriminator Pd. The goal is to have similar probability distributions so that generated images look realistic. The issue here is therefore how we define this similarity, or the "distance" between the 2 distributions. There are multiple choices :
-
-*
-*
-*
-
+We have seen that the main idea in GAN implementation is that we have 2 probability distributions, one for the Generator Pg and one for the Discriminator Pd. The goal is to have similar probability distributions so that generated images look realistic. The issue here is therefore how we define this similarity, or the "distance" between the 2 distributions. In the case of WGAN's, we are focusing on Wasserstein distance measure.
 
 
 
