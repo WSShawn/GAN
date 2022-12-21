@@ -26,6 +26,8 @@ The kernel is then passed along the image, row by row and column by column, unti
 
 ![convolution1](https://user-images.githubusercontent.com/114659655/200131876-4e9d595c-9ff9-4f57-9c58-b13382168a12.png)
 
+Stride and padding are the 2 other elements present in the process of convolution. When kernel is being passed along the image, it can be noticed that some pixels participate in more convolution operations than others. It is the case for the pixels in the center, compared to the ones on the corners. Hence, it is less used in feature detection. Padding helps us solve this issue by adding rows and columns of empty pixels. Stride dictates how the kernel moves along the image. A strid of 1 means that the kernel is moving 1 by 1 pixel each time, while a stride of 2 means the kernel moves 2 by 2.
+
 ### Convolutional Layers
 
 The neural networks we are going to build are going to be formed of Convolutional Layers. Convolutional Layers are meant to process data that is correlated in space. The output of each convolutional layer is a feature map, which corresponds to a spatial projection where certain features are exposed, which have previously been found by the convolutional layer.
@@ -106,6 +108,10 @@ The Generator is trained to minimize the loss with respect to the fake images it
 - A number of random noise vectors equal to the batch size is created and inputted to the Generator for the creation of fake images
 - Training of the Discriminator : On the real images, Discriminator classifies the image as "real" or "fake", according it the value 0 for "fake" and "1" for real. The obtained result is flattened into a 1 dimensional vector with values 0 or 1, which is compared to a vector composed only of value 1's the same size as the one obtained after the flattening through BCE. The same procedure is applied on the fake images, but this time the obtained tensor for comparison is composed only of value 0's. The obtained BCE loss function is optimized through the Adam optimizer
 - Training of the Generator : Discriminator network is applied to the generated fake images. The result of this operation is flattened on a 1-dimensional vector composed of values 0 or 1 depending on the classification by the discriminator. This obtained vector is compared through the BCE to a vector of the same size full of 1's. The obtained objective function will be maximized through the Adam Optimizer, as we want fake image to be classified as real as often as possible.
+
+### Results
+
+Let us look at some of the obtained images after 20 epochs :
 
 
 # Extension : WGAN- Wasserstein Generative Adversarial Networks
