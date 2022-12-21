@@ -111,12 +111,14 @@ The Generator is trained to minimize the loss with respect to the fake images it
 
 ### Results
 
-Let us look at some of the obtained images after 20 epochs :
+Let us look at some of the obtained images after 3 epochs :
 
 
-#Extension : application on the MNIST Dataset
+# Extension : application on the MNIST Dataset
 
-In order to see the behavior of our Discriminator and Generator, we can apply them to the MNIST dataset. A few differences are present at the level of hyperparameters
+In order to see the behavior of our Discriminator and Generator, we can apply them to the MNIST dataset. A few differences are present at the level of hyperparameters. MNIST images are only black and white, meaning they have only 1 channel instead of 3. The image size is 32 instead of 64 here. The networks are trained in the same manner as before. 
+
+
 
 
 # Extension : WGAN- Wasserstein Generative Adversarial Networks
