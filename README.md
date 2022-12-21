@@ -114,6 +114,11 @@ The Generator is trained to minimize the loss with respect to the fake images it
 Let us look at some of the obtained images after 20 epochs :
 
 
+#Extension : application on the MNIST Dataset
+
+In order to see the behavior of our Discriminator and Generator, we can apply them to the MNIST dataset. A few differences are present at the level of hyperparameters
+
+
 # Extension : WGAN- Wasserstein Generative Adversarial Networks
 
 We have seen the principles of GANs and the functioning of DCGANS. We are now focusing on Wasserstein Generative Adversarial Networks
@@ -121,9 +126,24 @@ We have seen the principles of GANs and the functioning of DCGANS. We are now fo
 
 ## Introduction and concept
 
-Firstly let us understand why such variations of the traditional GANs have been created. While a very performant tool, GANs can be subject to convergence failure (failure to produce optimal results) and mode collapse (model failing to produce unique results and repeating a similar pattern, quality or classes). The advantage of WGANs is that they solve this issue and they offer higher stability for the training in comparison to traditional GANs. Another advantage is that the value of the global loss is meaningful, in the sense that it gives us a termination cirterion.
+Firstly let us understand why such variations of the traditional GANs have been created. While a very performant tool, GANs can be subject to convergence failure (failure to produce optimal results) and mode collapse (model failing to produce unique results and repeating a similar pattern, quality or classes). The advantage of WGANs is that they solve this issue and they offer higher stability for the training in comparison to traditional GANs. Another advantage is that the value of the global loss is meaningful, in the sense that it gives us a termination criterion.
 
 We have seen that the main idea in GAN implementation is that we have 2 probability distributions, one for the Generator Pg and one for the Discriminator Pd. The goal is to have similar probability distributions so that generated images look realistic. The issue here is therefore how we define this similarity, or the "distance" between the 2 distributions. In the case of WGAN's, we are focusing on Wasserstein distance measure.
+
+In the training cell, we are intializing the parameters the way we did in the GAN section. This time however we are taking the parameters metioned in the paper by Arjovsky M., Chintala S., Bottou L., (2017): Wasserstein GAN. We are taking a learning rate of 0.0005 and batch size is 64. 2 additional parameters are added, the discriminator iterations and the weight clip.
+
+
+# References
+
+[1^]  [Inkawich, N - DCGAN Tutorial] (https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html)
+
+[2^]  [Radford A., Metz L. Chintala S. (2016) : Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks] (https://arxiv.org/abs/1511.06434)
+
+
+[3^] [Arjovsky M., Chintala S., Bottou L., (2017): Wasserstein GAN] (https://arxiv.org/abs/1701.07875)
+
+[4^] [WGAN Repository] (https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/GANs/3.%20WGAN/train.py)
+
 
 
 
