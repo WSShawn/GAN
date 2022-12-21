@@ -84,61 +84,27 @@ Here D(G(z)) is the probability that the output of the Generator G is classified
 
 ![image](https://user-images.githubusercontent.com/114659655/208265308-6345ba98-1718-48be-9d65-2294af4cc528.png)
 
-It can be noticed that the 2 functions look alike. Indeed, the value of y can be dictated so as to correspond to the objective function of each of the 2 networks. For the Generator, we are looking for min log(1 - D(G(z))) which is equivalent to max log(D(G(z)), whereas for the Discriminator we are looking for max log(D(x)) + log(1-D(G(z)). 
+It can be noticed that the 2 functions look alike. Indeed, the value of y can be dictated so as to correspond to the objective function of each of the 2 networks. For the Generator, we are looking for min log(1 - D(G(z))) which is equivalent to max log(D(G(z)), whereas for the Discriminator we are looking for min log(D(x)) + log(1-D(G(z)). 
 
-It is worth reminding that the function BCELoss measures the Binary Cross Entropy between an input tensor and a target tensor. In our model, labelling is done with the value 1 for images classified as real and 0 for images classified as fake by the discriminator, through the functions $$zeros_like$$ and $$ones_like$$. The values are put in a tensor, which is compared to a tensor of the same size filled with 1's through the BCE Loss criterion. The difference between the 2 network consists in the tensor used as input for the BCELoss function.
+It is worth reminding that the function BCELoss measures the Binary Cross Entropy between an input tensor and a target tensor. In our model, labelling is done with the value 1 for images classified as real and 0 for images classified as fake by the discriminator, through the functions zeros_like and ones_like. The values are put in a tensor, which is compared to a tensor of the same size filled with 1's through the BCE Loss criterion. The difference between the 2 network consists in the tensor used as input for the BCELoss function.
 
-The Generator is trained to minimize the loss with respect to the fake images it generates, while the Discriminator's loss has 2 components as we have seen in its formula. We are maximizing the probability that it labels real images as real and fake images as fake. Through each batch the following operations are applied :
+### Optimizers and their intialization
 
+The training for our Networks  on the CelebA dataset will use the Adam (Adaptative moment estimation) optimizer, an extension of the stochastic gradient descent, given its computation efficiency in large datasets. However, it is not the only choice and we will see later than in some cases other optimizers perform better.
 
-```
-#Uploading real image to gpu
-    real_image = real_image.to(device)
+Adam optimizer is an adaptative learning rate method, meaning that it computes individual learning rates for different parameters. It does so by using estimations of the first and second moments of the gradient (mean and uncentered variance) to adapt the learning rate for each weight in the neural network. The procces is done by the usage of exponentially moving averages computed on the current batch.
 
-    #Generating noise vectors
-    noise = torch.randn((batch_size, size_latent, 1, 1)).to(device)
-    
-    #Generating fake image from noise
-    fake = gen(noise)
-
-    #Train discriminator
-
-    #Discriminator on real image
-    disc_real = disc(real). reshape(-1)
-    loss_disc_real = criterion(disc_real, torch.ones_like(disc_real))
-
-    #Discriminator on fake image
-    disc_fake = disc(fake).reshape(-1)
-    loss_disc_fake = criterion(fake, torch.zeros_like(disc_fake))
-
-    total_loss = loss_disc_real + loss_disc_fake
-    print("Discriminator Loss : " + str(total_loss))
-    D_losses.append(total_loss)
-
-    #Discriminator Adam optimization
-    disc.zero_grad()
-
-    #Retaining the graph as fake discriminated fake will be reutilized
-    total_loss.backward(retain_graph = True) 
-
-    disc_optimizer.step()
+Hyperparameters for the Adam optimizer are the learning rate, beta1 and beta2. The values of the betas represent the coefficients of the exponentially moving averages. We will take their values suggested in Radford A., Metz L. Chintala S. (2016) : Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks. These values are a 0.0002 for the learning rate (found empirically), 0.5 for beta1 and 0.999 for beta2. It should be noticed that conventional values for the betas are 0.9 and 0.999, but the authors found that a "value of 0.9 resulted in training oscillation and instability while reducing it to 0.5 helped
+stabilize training" (Radford A., Metz L. Chintala S. (2016) : Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks, p.4).
 
 
-    #Train generator
+### Training loop
 
-    #Discriminate fake and get loss
-    output = disc(fake).reshape(-1)
-    generator_loss = criterion(output, torch.ones_like(output))
-    print("Generator Loss :" + str(generator_loss))
-    G_losses.append(generator_loss)
+The Generator is trained to minimize the loss with respect to the fake images it generates. By looking at its loss function log(1 - D(G(z))), we can see that its minimization is equivalent to max(D(G(z))), which will be the optimization problem in our training loop. The Discriminator's loss has 2 components as we have seen in its formula. We are maximizing the probability that it labels real images as real and fake images as fake. Through each batch the following operations are applied :
 
-    #Generator Adam optimization
-    gen.zero_grad()
-    generator_loss.backward()
-    gen_optimizer.step()
-
-```
-
+- A number of real images equal to the batch size are taken from the dataset and and sent to CUDA
+- A number of random noise vectors equal to the batch size is created and inputted to the Generator for the creation of fake images
+- Training of the Discriminator : On the real images, Discriminator classifies the image as "real" or "fake", according it the value 0 for "fake" and "1" for real. The obtained result is flattened into a 1 dimensional tensor, which is compared to a tensor composed only of value 1's the same size as the one obtained after the flattening through BCE. The same procedure is applied on the fake images, but this time the obtained tensor for comparison is composed only of value 0's.
 
 
 #Extension : WGAN- Wasserstein Generative Adversarial Networks
