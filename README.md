@@ -18,7 +18,7 @@ From a general point of view, Convolutional Neural Networks represent a particul
 
 ### Convolution
 
-The object at the basis of the convolution process is the kernel. Given the 3-dimensional characterisation of our data (height, width and values of the RGB channel), the kernel can be initialized as 3-dimensional, with the 3rd dimension representing the number of filters applied, or 2-dimensional, meaning that the same filter will be applied to each of the 3 color channels. The values that constitute the kernel are randomly initialized and will be further optimized according to the accuracy and loss of the convolution process.
+The object at the basis of the convolution process is the kernel. Given the 3-dimensional characterisation of our data (height, width and values of the RGB channel), the kernel can be initialized as 3-dimensional, with the 3rd dimension representing the number of filters applied, or 2-dimensional, meaning that the same filter will be applied to each of the 3 color channels. The values that constitute the kernel represent the weights of the network, they are randomly initialized and will be further optimized according to the accuracy and loss of the convolution process.
 
 The kernel is then passed along the image, row by row and column by column, until it has slid over all the pixels of the image. A dot product is applied between the kernel and the surface on the image on which it slides. The resulting image is the output matrix. In the case of a Convolutional Neural Network, the output obtained by the convolution inside a hidden layer is passed as input to the next hidden layer.
 
@@ -61,6 +61,8 @@ The last convolution layer of the discriminator is flattened and passed through 
 ## Weights initializiation
 
 Model weights will be initialized according to the paper by Radford, Metz and Chintala (2015). They are normally distributed with mean 0 and standard deviation 0.02. The function weights_initialization takes as input one of the 2 models and transforms input data within the network's hidden layers, respectively the Convolutional, Transposed Convolutional and Batch Normalization Layer.
+
+For a Convolutional Layer, weights represent each matrix element in the Kernel, that will be trained.
 
 ```
 def weights_initialization(model):
