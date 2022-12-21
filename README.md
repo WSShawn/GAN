@@ -8,7 +8,9 @@ The main idea behind GANs consists in the competition between 2 neural networks 
 
 ## Data 
 
-The dataset used in our study is the Celeba Dataset. It represents a collection of more than 200K photos of celebrities, which come in .jpg format.
+The dataset used in our study is the Celeba Dataset. It represents a collection of more than 200K photos of celebrities, which come in .jpg format. We can plot some of the images in the training set :
+![image](https://user-images.githubusercontent.com/114659655/208944403-5f22e5f0-5290-4fa2-80c8-6811f8318fec.png)
+
 
 
 
@@ -84,7 +86,7 @@ Here D(G(z)) is the probability that the output of the Generator G is classified
 
 It can be noticed that the 2 functions look alike. Indeed, the value of y can be dictated so as to correspond to the objective function of each of the 2 networks. For the Generator, we are looking for min log(1 - D(G(z))) which is equivalent to max log(D(G(z)), whereas for the Discriminator we are looking for max log(D(x)) + log(1-D(G(z)). 
 
-It is worth reminding that the function BCELoss measures the Binary Cross Entropy between an input tensor and a target tensor. In our model, labelling is done with the value 1 for images classified as real and 0 for images classified as fake by the discriminator. The values are put in a tensor, which is compared to a tensor of the same size filled with 1's through the BCE Loss criterion. The difference between the 2 network consists in the tensor used as input for the BCELoss function.
+It is worth reminding that the function BCELoss measures the Binary Cross Entropy between an input tensor and a target tensor. In our model, labelling is done with the value 1 for images classified as real and 0 for images classified as fake by the discriminator, through the functions $$zeros_like$$ and $$ones_like$$. The values are put in a tensor, which is compared to a tensor of the same size filled with 1's through the BCE Loss criterion. The difference between the 2 network consists in the tensor used as input for the BCELoss function.
 
 The Generator is trained to minimize the loss with respect to the fake images it generates, while the Discriminator's loss has 2 components as we have seen in its formula. We are maximizing the probability that it labels real images as real and fake images as fake. Through each batch the following operations are applied :
 
