@@ -22,7 +22,7 @@ From a general point of view, Convolutional Neural Networks represent a particul
 
 The object at the basis of the convolution process is the kernel. Given the 3-dimensional characterisation of our data (height, width and values of the RGB channel), the kernel can be initialized as 3-dimensional, with the 3rd dimension representing the number of filters applied, or 2-dimensional, meaning that the same filter will be applied to each of the 3 color channels. The values that constitute the kernel represent the weights of the network, they are randomly initialized and will be further optimized according to the accuracy and loss of the convolution process.
 
-The kernel is then passed along the image, row by row and column by column, until it has slid over all the pixels of the image. A dot product is applied between the kernel and the surface on the image on which it slides. The resulting image is the output matrix. In the case of a Convolutional Neural Network, the output obtained by the convolution inside a hidden layer is passed as input to the next hidden layer.
+The kernel is then passed along the image, row by row and column by column, until it has slid over all the pixels of the image. A dot product is applied between the kernel and the surface on the image on which it slides. The resulting image is the output matrix. In the case of a Convolutional Neural Network, the output obtained by the convolution inside a hidden layer is passed as input to the next hidden layer, after its normalization and passage through the acitvation function. The process of convolution is illustrated below :
 
 ![convolution1](https://user-images.githubusercontent.com/114659655/200131876-4e9d595c-9ff9-4f57-9c58-b13382168a12.png)
 
@@ -104,10 +104,11 @@ The Generator is trained to minimize the loss with respect to the fake images it
 
 - A number of real images equal to the batch size are taken from the dataset and and sent to CUDA
 - A number of random noise vectors equal to the batch size is created and inputted to the Generator for the creation of fake images
-- Training of the Discriminator : On the real images, Discriminator classifies the image as "real" or "fake", according it the value 0 for "fake" and "1" for real. The obtained result is flattened into a 1 dimensional tensor, which is compared to a tensor composed only of value 1's the same size as the one obtained after the flattening through BCE. The same procedure is applied on the fake images, but this time the obtained tensor for comparison is composed only of value 0's.
+- Training of the Discriminator : On the real images, Discriminator classifies the image as "real" or "fake", according it the value 0 for "fake" and "1" for real. The obtained result is flattened into a 1 dimensional vector with values 0 or 1, which is compared to a vector composed only of value 1's the same size as the one obtained after the flattening through BCE. The same procedure is applied on the fake images, but this time the obtained tensor for comparison is composed only of value 0's. The obtained BCE loss function is optimized through the Adam optimizer
+- Training of the Generator : Discriminator network is applied to the generated fake images. The result of this operation is flattened on a 1-dimensional vector composed of values 0 or 1 depending on the classification by the discriminator. This obtained vector is compared through the BCE to a vector of the same size full of 1's. The obtained objective function will be maximized through the Adam Optimizer, as we want fake image to be classified as real as often as possible.
 
 
-#Extension : WGAN- Wasserstein Generative Adversarial Networks
+# Extension : WGAN- Wasserstein Generative Adversarial Networks
 
 We have seen the principles of GANs and the functioning of DCGANS. We are now focusing on Wasserstein Generative Adversarial Networks
 
