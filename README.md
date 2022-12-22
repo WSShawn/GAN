@@ -138,8 +138,11 @@ Let us look at some of the obtained images after 3 epochs :
 ![image](https://user-images.githubusercontent.com/114659655/209126836-9ea22860-0a8d-4a70-92fd-95f6d1b27a45.png)
 
 
+Let us now look at the graph of the evolution of the objective functions for both the Generator and the Discriminator :
+
 ![graph_d_g](https://user-images.githubusercontent.com/114659655/209131435-8d49a4f9-6fff-4676-aec2-e3213702af4f.png)
 
+We can see that the loss function for the discriminator is going down as the number of iterations increases, while the objective function for the Generator is going up. This is showing a normal optimization of the network. We want the objective function of the Generator to increase, given the way we have coded the training loop. We are looking for the maximization of D(G(z)).
 
 
 # Extension : application on the MNIST Dataset
