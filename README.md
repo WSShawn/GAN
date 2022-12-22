@@ -12,6 +12,22 @@ The dataset used in our study is the Celeba Dataset. It represents a collection 
 ![image](https://user-images.githubusercontent.com/114659655/209142529-fabd6e5a-4f66-407f-b67c-fd4cffc5e7f3.png)
 
 
+## General Functioning of a Neural Network
+
+Neural Networks represent a data processing algorithm inspired by the functioning of a human brain. They are generally composed of 3 groups of layers :
+
+- Input layers : represents the information that is fed to the network in its raw state. This information can be numeric or images
+- Hidden layers : are destined for the data processing. The hidden layers do the computations and extract information for the data, which can come in the form of features in the case of images (shapes, edges). The further the hidden layer, the more its identification task is.
+- Output layers : output the final predictions based on the previous layers' processing.
+
+Each layer of the mentioned layers is formed of neurons. This structure has been design to mimick behavior of a human neuron. The neurons receive input, either from the previous layer or from the initial dataset. Afterwards, the input is processed through the multiplication with a weight (which can be seen as the dendrites of the neuron) and passes it throuhg an activation function, which will provide an output. 
+
+The activation functions allow the communication between the neurons through the synapses. The activation functions can be of different types, with respect to the desired output. Some examples include the Sigmoid function, Hyperbolic Tangent or Rectified Linear Unit (ReLU) functions. Each type of this function will be applied in the implementation of Deep Convolutional Generative Adversarial Networks. Some particularities of each type of function are the following :
+
+- Sigmoid : takes any real value as input but always outputs a value between 0 and 1
+- Hyperbolic Tangent : takes any real value as input and outputs values between -1 and 1
+- Rectified Linear Unit (ReLU) function : takes any real value as input, outputs 0 if the input is negative and the value of the input if not
+
 
 
 ## Deep Convolutional Generative Adversarial networks 
