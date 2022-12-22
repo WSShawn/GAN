@@ -79,7 +79,7 @@ Batch Normalization : After the Convolutional Layer, a batch normalization layer
 
 The input of the discriminator is an image in its intial dimensions. The image is processed through Conv2d layers, as the data has to be downsampled. As mentioned before, the filter (Kernel) passes through the set of pixels of the image. Values of the corresponding pixels are multiplied together then summed up to result in the convolved feature. 
 
-The last convolution layer of the discriminator is flattened and passed through a sigmoid function. The Discriminator will therefore output the label of the image, 0 corresponding for 'fake' and 1 corresponding for 'real. The following image illustrates the architecture of the Discriminator Network.
+The last convolution layer of the discriminator is flattened and passed through a sigmoid function. The Discriminator will therefore output the label of the image, 0 corresponding for 'fake' and 1 corresponding for 'real'. The following image illustrates the architecture of the Discriminator Network.
 
 ![image](https://user-images.githubusercontent.com/114659655/208300570-d18620da-22cf-4d00-a430-b6293ade3069.png)
 
