@@ -36,7 +36,7 @@ Below we can find an illustration of the architecture of a neural network :
 
 ## Data 
 
-The dataset used in our study is the Celeba Dataset. It represents a collection of more than 200K photos of celebrities, which come in .jpg format. We can plot some of the images in the training set :
+The dataset used in our study is the Celeba Dataset. It represents a collection of more than 200K photos of celebrities, which come in .jpg format. We can plot some of the images in the dataset :
 ![image](https://user-images.githubusercontent.com/114659655/209142529-fabd6e5a-4f66-407f-b67c-fd4cffc5e7f3.png)
 
 
@@ -72,7 +72,7 @@ Let us concentrate on the stride and padding that we introduce as arguments. Cho
 
 ### Convolutional Layers
 
-The neural networks we are going to build are going to be formed of Convolutional Layers. Convolutional Layers are meant to process data that is correlated in space, meaning pixels in an image whose measurements are represented by their color value that goes from 0 to 255. The pixels are correlated as they are part of the same image, therefore the value of one pixel wil influence the value of any neighbouring pixel. The output of each convolutional layer is a feature map, which corresponds to a spatial projection where certain features are exposed, which have previously been found by the convolutional layer.
+The neural networks we are going to build are going to be formed of Convolutional Layers. Convolutional Layers are meant to process data that is correlated in space, meaning pixels in an image whose measurements are represented by their color value that goes from 0 to 255. The pixels are correlated as they are part of the same image, therefore the value of one pixel wil influence the value of any neighbouring pixel. This is what makes the data correlated in space, as opposed to data correlated in time, for example, such as time series. The output of each convolutional layer is a feature map, which corresponds to a spatial projection where certain features are exposed, which have previously been found by the convolutional layer.
 
 The layers of the network are interconnected : the second layer takes as input the output from the first layer and so on. This can be seen in the values of the arguments that are passed onto each layer. For example, the number of output channels from the first layer will be the number of input channels of the second layer. We implement the layers using they torch.nn module.
 
