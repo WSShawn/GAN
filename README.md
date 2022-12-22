@@ -20,7 +20,7 @@ From a general point of view, Convolutional Neural Networks represent a particul
 
 ### Convolution
 
-The object at the basis of the convolution process is the kernel. It is represented by a 2-dimensional matrix of pixels that will be passed along the pixels of the input image. The values that constitute the kernel represent the weights of the network, they are randomly initialized and will be further optimized according to the accuracy and loss of the convolution process.
+The object at the basis of the convolution process is the kernel. It is represented by a 2-dimensional matrix of pixels that will be passed along the pixels of the input image. The values that constitute the kernel represent the weights of the network, they are randomly initialized and will be further optimized according to the accuracy and loss of the convolution process. The kernel we are using in our application is 4x4, chosen according to the paper Radford A., Metz L. Chintala S. (2016) : Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks, in order to match the dimensions desired for the feature maps passed through each layer. Its size is the same in the case of the Generator as in the case of the Discriminator.
 
 The kernel is initialized and then passed along the image, row by row and column by column, until it has slid over all the pixels of the image. A dot product is applied between the kernel and the surface on the image on which it slides, resulting in a sum of element by element product between the kernel and the components of the image matrix. The resulting image is the output matrix. Each Kernel position corresponds to a single output pixel, for which the value is calculated by multiplying together the kernel value and the underlying image pixel value for each pixel in the kernel, and summing up the results. As it can be deduced, the size of the output image of the convolution process will be smaller, depending on the size of the initial image and the size of the kernel. In the case of a Convolutional Neural Network, the output obtained by the convolution inside a hidden layer is passed as input to the next hidden layer, after its normalization and passage through the acitvation function. The process of convolution is illustrated below :
 
@@ -71,7 +71,7 @@ The Generator Neural Network's initial input is represented by a latent 1-dimens
 **source : [Inkawich, N - DCGAN Tutorial] (https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html)**
 
 
-Transposed convolution is then applied by sliding the kernel along the noise vector. We need to pass from a 1x100 dimensional vector to the size of the images in the dataset (3x64x64) for the final output, the convolution applied is transposed in order to upsample the data. Each transposed convolution will produce a feature map inside the generator.
+Transposed convolution is then applied by sliding the kernel along the noise vector. We need to pass from a 1x100 dimensional vector to the size of the images in the dataset (3x64x64, meaning 3 channels, 64 pixels height and 64 pixels width) for the final output, the convolution applied is transposed in order to upsample the data. Each transposed convolution will produce a feature map inside the generator.
 
 Batch Normalization : After the Convolutional Layer, a batch normalization layer is implemented. It normalizes data at batch level so that it can be passed through the activation function afterwards. We are applying Batch Normalization to 2d images using BatchNorm2d().
 
