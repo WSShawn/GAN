@@ -79,6 +79,7 @@ The input of the discriminator is an image in its intial dimensions. The image i
 The last convolution layer of the discriminator is flattened and passed through a sigmoid function. The Discriminator will therefore output the label of the image, 0 corresponding for 'fake' and 1 corresponding for 'real. The following image illustrates the architecture of the Discriminator Network.
 
 ![image](https://user-images.githubusercontent.com/114659655/208300570-d18620da-22cf-4d00-a430-b6293ade3069.png)
+**source : [6^] [Tsang, S. (2022) : Review: DCGAN — Deep Convolutional Generative Adversarial Network (GAN)] (https://sh-tsang.medium.com/review-dcgan-deep-convolutional-generative-adversarial-network-gan-ec390cded63c)**
 
 
 
@@ -166,6 +167,8 @@ In the training cell, we are intializing the parameters the way we did in the GA
 [4^] [WGAN Repository] (https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/GANs/3.%20WGAN/train.py)
 
 [5^] [Godoy, D. (2022) : What are Transposed Convolutions ?] (https://towardsdatascience.com/what-are-transposed-convolutions-2d43ac1a0771#:~:text=Transposed%20convolutions%20are%20like%20the,the%20generator%20part%20of%20GANs.)
+
+[6^] [Tsang, S. (2022) : Review: DCGAN — Deep Convolutional Generative Adversarial Network (GAN)] (https://sh-tsang.medium.com/review-dcgan-deep-convolutional-generative-adversarial-network-gan-ec390cded63c)
 
 
 
