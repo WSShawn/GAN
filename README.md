@@ -139,6 +139,7 @@ Let us look at some of the obtained images after 3 epochs :
 
 ![image](https://user-images.githubusercontent.com/114659655/209126836-9ea22860-0a8d-4a70-92fd-95f6d1b27a45.png)
 
+The images look noisy because of the reduced number of epochs. The networks have not been training enough in order to reproduce visible features. However, for some images some shapes are starting to get visible
 
 Let us now look at the graph of the evolution of the objective functions for both the Generator and the Discriminator :
 
@@ -150,7 +151,10 @@ We can see that the loss function for the discriminator is going down as the num
 
 ## Extension : application on the MNIST Dataset
 
-In order to see the behavior of our Discriminator and Generator, we can apply them to the MNIST dataset. A few differences are present at the level of hyperparameters. MNIST images are only black and white, meaning they have only 1 channel instead of 3. The image size is 32 instead of 64 here. The networks are trained in the same manner as before. 
+In order to see the behavior of our Discriminator and Generator, we can apply them to the MNIST dataset. A few differences are present at the level of hyperparameters. MNIST images are only black and white, meaning they have only 1 channel instead of 3. The image size is 32 instead of 64 here. The networks are trained in the same manner as before. We can take a look at the images obtained after 3 epochs :
+
+![image](https://user-images.githubusercontent.com/114659655/209143219-83671e28-94db-47a6-b2b8-79e4a38082b8.png)
+
 
 
 
