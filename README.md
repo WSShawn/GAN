@@ -15,15 +15,17 @@ Neural Networks represent a data processing algorithm inspired by the functionin
 - Hidden layers : are destined for the data processing. The hidden layers do the computations and extract information for the data, which can come in the form of features in the case of images (shapes, edges). The further the hidden layer, the more its identification task is.
 - Output layers : output the final predictions based on the previous layers' processing.
 
-Each layer of the mentioned layers is formed of neurons. This structure has been design to mimick behavior of a human neuron. The neurons receive input, either from the previous layer or from the initial dataset. Afterwards, the input is processed through the multiplication with a weight (which can be seen as the dendrites of the neuron) and passes it throuhg an activation function, which will provide an output. 
+Each layer of the mentioned layers is formed of neurons. This structure has been designed to mimick behavior of a human neuron. The neurons receive input, either from the previous layer or from the initial dataset. Afterwards, the input is processed through the multiplication with a weight (which can be seen as the dendrites of the neuron) and passed throuhg an activation function, which will provide an output. 
 
-The activation functions allow the communication between the neurons through the synapses. The activation functions can be of different types, with respect to the desired output. Some examples include the Sigmoid function, Hyperbolic Tangent or Rectified Linear Unit (ReLU) functions. Each type of this function will be applied in the implementation of Deep Convolutional Generative Adversarial Networks. Some particularities of each type of function are the following :
+The activation functions allow the communication between the neurons through the synapses. The activation functions can be of different types, with respect to the desired output. Some examples include the Sigmoid function, Hyperbolic Tangent or Rectified Linear Unit (ReLU) functions. Each type of this function will be applied in the implementation of Deep Convolutional Generative Adversarial Networks. Some particularities of each type of these functions are the following :
 
 - Sigmoid : takes any real value as input but always outputs a value between 0 and 1
 - Hyperbolic Tangent : takes any real value as input and outputs values between -1 and 1
 - Rectified Linear Unit (ReLU) function : takes any real value as input, outputs 0 if the input is negative and the value of the input if not
 
-Each neuron has also a Bias component, which have a role in enriching the representation of the input through the weights of the model. The bias represents a constant, and its presence shifts the activation function towards the positive or the negative values. In the absence of a bias, a simple matrix multiplication between the inputs and weights is effectuated. This situation can result in the overfitting over the data set.
+There exists also a variation of the ReLU function, called Leaky ReLU, which instead of computing 0 if the input is negative, it computes a value given by a linear function with negative values but positive slope. The slope coefficient is defined before training.
+
+Each neuron also has a Bias component, which has a role in enriching the representation of the input through the weights of the model. The bias represents a constant, and its presence shifts the activation function towards the positive or the negative values. In the absence of a bias, a simple matrix multiplication between the inputs and weights is effectuated. This situation can result in the overfitting over the data set.
 
 Below we can find an illustration of the architecture of a neural network :
 
