@@ -138,7 +138,7 @@ Let us look at some of the obtained images after 3 epochs :
 ![image](https://user-images.githubusercontent.com/114659655/209126836-9ea22860-0a8d-4a70-92fd-95f6d1b27a45.png)
 
 
-![image](https://user-images.githubusercontent.com/114659655/209127027-548905ac-90d0-4652-b2b0-fcacb80a4c27.png)
+![graph_d_g](https://user-images.githubusercontent.com/114659655/209131435-8d49a4f9-6fff-4676-aec2-e3213702af4f.png)
 
 
 
