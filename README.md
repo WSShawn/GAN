@@ -65,6 +65,7 @@ Throughout the implementation of our neural networks, we wil use the Pytorch fra
 The Generator Neural Network's initial input is represented by a latent 1-dimensional noise vector. The length of the latent vector is fixed and can be chosen arbitrarily, but we will choose 100 for our example. We will draw the latent vector from the Gaussian distribution. The dimension of the latent vector will represent the number of channels of the input of the first layer of the network. 
 
 ![1_ULAGAYoGGr5eEB2377ArYA](https://user-images.githubusercontent.com/114659655/201658929-c53960f3-1d5d-4e33-b6c6-f6f88d484100.png)
+
 **source : [Inkawich, N - DCGAN Tutorial] (https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html)**
 
 
@@ -79,6 +80,7 @@ The input of the discriminator is an image in its intial dimensions. The image i
 The last convolution layer of the discriminator is flattened and passed through a sigmoid function. The Discriminator will therefore output the label of the image, 0 corresponding for 'fake' and 1 corresponding for 'real. The following image illustrates the architecture of the Discriminator Network.
 
 ![image](https://user-images.githubusercontent.com/114659655/208300570-d18620da-22cf-4d00-a430-b6293ade3069.png)
+
 **source : [6^] [Tsang, S. (2022) : Review: DCGAN — Deep Convolutional Generative Adversarial Network (GAN)] (https://sh-tsang.medium.com/review-dcgan-deep-convolutional-generative-adversarial-network-gan-ec390cded63c)**
 
 
