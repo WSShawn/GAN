@@ -139,7 +139,7 @@ Let us look at some of the obtained images after 3 epochs :
 
 ![image](https://user-images.githubusercontent.com/114659655/209126836-9ea22860-0a8d-4a70-92fd-95f6d1b27a45.png)
 
-The images look noisy because of the reduced number of epochs. The networks have not been training enough in order to reproduce visible features. However, for some images some shapes are starting to get visible
+The images look noisy because of the reduced number of epochs, which we have fixed because of ressource constraints. The networks have not been training enough in order to reproduce visible features. However, for some images some shapes are starting to get visible.
 
 Let us now look at the graph of the evolution of the objective functions for both the Generator and the Discriminator :
 
