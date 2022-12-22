@@ -196,6 +196,9 @@ In the training cell, we are intializing the parameters the way we did in the GA
 
 [7^] [Dertat, A. (2017) : Applied Deep Learning - Part 4: Convolutional Neural Networks] (https://towardsdatascience.com/applied-deep-learning-part-4-convolutional-neural-networks-584bc134c1e2)
 
+[8^]  [DCGAN Repository] (https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/GANs/2.%20DCGAN/model.py)
+
+
 
 
 
