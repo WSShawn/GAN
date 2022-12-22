@@ -51,7 +51,7 @@ The layers of the network are interconnected : the second layer takes as input t
 
 ### Batch Normalization Layers
 
-Batch Normalization is applied right after the Convolutional Layer. It consists in the normalization of the activation vectors using the mean and standard deviation of the current bach. The term "normalization" refers to constraining the data to having values between 0 and 1. Given that the data points in an image are pixels, which have a value between 0 and 225, it is necessary to normalize them to a range that is manageable, otherwise the weights of the neural network will be affected during trainin by becoming too large and hence producing pixels on a very wide range of values for the output image.
+Batch Normalization is applied right after the Convolutional Layer. It consists in the normalization of the activation vectors using the mean and standard deviation of the current bach. The term "normalization" refers to constraining the data to having values between 0 and 1. Given that the data points in an image are pixels, which have a value between 0 and 225, it is necessary to normalize them to a range that is manageable, otherwise the weights of the neural network will be affected during trainin by becoming too large and hence producing pixels on a very wide range of values for the output image. As mentioned in the paper by Radford A., Metz L. Chintala S. (2016) "[batch normalization] helps deal with training problems that arise due to poor initialization and helps gradient flow in deeper models".
 
 ### Activation functions
 
