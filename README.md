@@ -96,11 +96,13 @@ For a Convolutional Layer, weights represent each matrix element in the Kernel, 
 After the Discriminator and the Generator have been initialized given the hyperparameters defined at the beginning of the code (number of channels and number of features for the discriminator and size of the latent vector, the number of channels and the number of features for the generator), weights are initialized. We use the Binary Cross Entropy loss function and Adam Optimizer for both Networks. In order to understand the choice for these characteristics, we have to look at the principle of interaction between the networks :
 
 ![image](https://user-images.githubusercontent.com/114659655/208265282-205b6375-2370-408f-998e-27ed7c864ba5.png)
+
 ***source : [Inkawich, N - DCGAN Tutorial] (https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html) ***
 
 Here D(G(z)) is the probability that the output of the Generator G is classified as a real image. Let us look now at the Binary Cross Entropy Loss : 
 
 ![image](https://user-images.githubusercontent.com/114659655/208265308-6345ba98-1718-48be-9d65-2294af4cc528.png)
+
 ***source : [Inkawich, N - DCGAN Tutorial] (https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html) ***
 
 It can be noticed that the 2 functions look alike. Indeed, the value of y can be dictated so as to correspond to the objective function of each of the 2 networks. For the Generator, we are looking for min log(1 - D(G(z))) which is equivalent to max log(D(G(z)), whereas for the Discriminator we are looking for min log(D(x)) + log(1-D(G(z)). 
