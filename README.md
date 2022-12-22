@@ -323,6 +323,20 @@ Initialization of Generator and Discriminator, initialization of their weights a
 Initialization of Binary Cross-Entropy as loss function
 Initialization of empty lists of losses
 
+Passage through each batch and each epoch and optimization of objective functions for the discriminator and the generator
+
+Objects
+
+----------
+disc : discriminator
+gen : generator
+gen_optimizer : Adam optimizer taking generator's parameters as input, as well as its hyperparameters
+disc_optimizer : Adam optimizer taking discriminator's parameters as input, as well as its hyperparameters
+criterion : Binary Cross Entropy Loss Function
+step : counter for the number of iterations
+D_losses : list of calculated losses at each iterations for the discriminator
+G_obj : list of calculated values for the objective function at each iteraton for the generator
+img_list : list of generated images
 
 References 
 
@@ -362,7 +376,7 @@ disc.train()
 
 #List of losses
 D_losses = []
-G_losses = []
+G_obj = []
 img_list = []
 
 #Training Loop
@@ -421,15 +435,15 @@ for epoch in range(epochs):
 
     #Discriminate fake and get objective function
     output = disc(fake).reshape(-1)
-    generator_loss = criterion(output, torch.ones_like(output))
-    G_losses.append(generator_loss.item())
-    print("Generator objective function :" + str(generator_loss))
+    generator_obj = criterion(output, torch.ones_like(output))
+    G_obj.append(generator_obj.item())
+    print("Generator objective function :" + str(generator_obj))
 
 
     #Generator Adam optimization
-    generator_loss.retain_grad()
+    generator_obj.retain_grad()
     gen.zero_grad()
-    generator_loss.backward()
+    generator_obj.backward()
     gen_optimizer.step()
 
     #Appending images in the image list every 100th step :
@@ -448,14 +462,59 @@ Let us look at some of the obtained images after 3 epochs :
 
 ![image](https://user-images.githubusercontent.com/114659655/209209427-4f39756c-a68d-4a63-a3b6-1b3382c72af3.png)
 
-The images look noisy because of the reduced number of epochs, which we have fixed because of ressource constraints. The networks have not been training enough in order to reproduce visible features. However, for some images some shapes are starting to get visible.
+The images look noisy because of the reduced number of epochs, which we have fixed because of ressource constraints. The networks have not been training enough in order to reproduce visible features. However, for some images some shapes are starting to get visible. Below we find the code for illustrating of some of the obtained images:
+
+```
+"""Plot of obtained images throught imshow
+
+
+References 
+
+----------
+
+[1^]  [Inkawich, N - DCGAN Tutorial] (https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html)
+
+"""
+### Pure python code can be found here
+### https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html
+
+fig = plt.figure(figsize=(8,8))
+plt.axis("off")
+ims = [[plt.imshow(np.transpose(i,(1,2,0)), animated=True)] for i in img_list]
+```
+
+
 
 Let us now look at the graph of the evolution of the objective functions for both the Generator and the Discriminator :
 
 ![image](https://user-images.githubusercontent.com/114659655/209132815-a01c3cce-ecef-4d8b-a450-3ad308c854b7.png)
 
 
-We can see that the loss function for the discriminator is going down as the number of iterations increases, while the objective function for the Generator is going up. This is showing a normal optimization of the network. We want the objective function of the Generator to increase, given the way we have coded the training loop. We are looking for the maximization of D(G(z)).
+We can see that the loss function for the discriminator is going down as the number of iterations increases, while the objective function for the Generator is going up. This is showing a normal optimization of the network. We want the objective function of the Generator to increase, given the way we have coded the training loop. We are looking for the maximization of D(G(z)). Below we find the code for the objective functions plotting :
+
+
+```
+"""Plot of objective functions
+
+Loss function should be decreasing for the Discriminator, while the objective function should be increasing
+
+References 
+
+----------
+
+[1^]  [Inkawich, N - DCGAN Tutorial] (https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html)
+
+"""
+
+#Graph of objective functions
+plt.figure(figsize = (6,6))
+plt.title("Objective functions evolution")
+plt.plot(G_losses, label = "Generator objective function")
+plt.plot(D_losses, label = "Discriminator objective function")
+plt.xlabel("Iterations")
+plt.legend()
+plt.show()
+```
 
 
 ## Extension : application on the MNIST Dataset
@@ -492,6 +551,10 @@ We have seen that the main idea in GAN implementation is that we have 2 probabil
 Here the capital PI represents the set of all joint distributions whose marginal distributions are Pr respectively Pg.
 
 In the training cell, we are intializing the parameters the way we did in the GAN section. This time however we are taking the parameters metioned in the paper by Arjovsky M., Chintala S., Bottou L., (2017): Wasserstein GAN. We are taking a learning rate of 0.0005 and batch size is 64. 2 additional parameters are added, the discriminator iterations and the weight clip. Weight clipping prevents the gradient from getting too large in training, making the model unstable. The idea of weight clipping is that if the gradient gets too large, we rescale the parameters by the value of the weight clip.
+
+Below we find the training loop of a WGAN :
+
+
 
 
 # References
