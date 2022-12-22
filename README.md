@@ -722,6 +722,8 @@ for epoch in range(epochs):
 
 [9^]  [Malik, F. (2019) : Neural Networks Bias And Weights] (https://medium.com/fintechexplained/neural-networks-bias-and-weights-10b53e6285da#:~:text=The%20addition%20of%20bias%20reduces,to%20activate%20the%20activation%20function.)
 
+[10^] [Goodfellow I., Pouget-Abadie J., Mirza M., Xu B., Warde-Farley D., Ozair S., Courville A., Bengio Y. (2014) : Generative Adversarial Networks] (https://arxiv.org/abs/1406.2661)
+
 
 
 
