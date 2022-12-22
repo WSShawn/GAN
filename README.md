@@ -16,13 +16,14 @@ The dataset used in our study is the Celeba Dataset. It represents a collection 
 
 ## Deep Convolutional Generative Adversarial networks 
 
-From a general point of view, Convolutional Neural Networks represent a particular type of neural networks that posess an ability to detect patterns in the data (for example, shapes, corners or edges in the case of images). Their hidden layers, called "Convolutional Layers", receive input, transform it and then pass it to the following layers. The operation that corresponds to the transformation is called a "Convolution".
+From a general point of view, Convolutional Neural Networks represent a particular type of neural networks that posess an ability to detect patterns in the data (for example, shapes, corners or edges in the case of images). Their hidden layers, called "Convolutional Layers", receive input, transform it and then pass it to the following layers.  The operation that corresponds to the transformation of an input is called a "Convolution".
 
 ### Convolution
 
-The object at the basis of the convolution process is the kernel. Given the 3-dimensional characterisation of our data (height, width and values of the RGB channel), the kernel can be initialized as 3-dimensional, with the 3rd dimension representing the number of filters applied, or 2-dimensional, meaning that the same filter will be applied to each of the 3 color channels. The values that constitute the kernel represent the weights of the network, they are randomly initialized and will be further optimized according to the accuracy and loss of the convolution process.
+The object at the basis of the convolution process is the kernel. It is represented by a 2-dimensional matrix of pixels that will be passed along the pixels of the input image. The values that constitute the kernel represent the weights of the network, they are randomly initialized and will be further optimized according to the accuracy and loss of the convolution process.
 
-The kernel is then passed along the image, row by row and column by column, until it has slid over all the pixels of the image. A dot product is applied between the kernel and the surface on the image on which it slides. The resulting image is the output matrix. In the case of a Convolutional Neural Network, the output obtained by the convolution inside a hidden layer is passed as input to the next hidden layer, after its normalization and passage through the acitvation function. The process of convolution is illustrated below :
+The kernel is initialized and then passed along the image, row by row and column by column, until it has slid over all the pixels of the image. A dot product is applied between the kernel and the surface on the image on which it slides, resulting in a sum of element by element product between the kernel and the components of the matrix. The resulting image is the output matrix. In the case of the normal convolution, the resulting matrix has a reduced size, depending on the  
+In the case of a Convolutional Neural Network, the output obtained by the convolution inside a hidden layer is passed as input to the next hidden layer, after its normalization and passage through the acitvation function. The process of convolution is illustrated below :
 
 ![convolution1](https://user-images.githubusercontent.com/114659655/200131876-4e9d595c-9ff9-4f57-9c58-b13382168a12.png)
 
