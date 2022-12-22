@@ -350,7 +350,9 @@ Initialization of Generator and Discriminator, initialization of their weights a
 Initialization of Binary Cross-Entropy as loss function
 Initialization of empty lists of losses
 
-Passage through each batch and each epoch and optimization of objective functions for the discriminator and the generator
+Passage through each batch and each epoch and optimization of objective functions for the discriminator and the generator at each iteration. 
+Printing of the average accuracy of the discriminator
+Once every 100 iterations, images are added to the image list.
 
 Objects
 
