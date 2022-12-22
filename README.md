@@ -53,6 +53,7 @@ Batch Normalization is applied right after the Convolutional Layer. It consists 
 
 ### Activation layers
 
+The activation functions are used depending on the type of output we are looking for.
 
 ## Generator and Discriminator
 
