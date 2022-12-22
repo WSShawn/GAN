@@ -146,7 +146,7 @@ Let us now look at the graph of the evolution of the objective functions for bot
 We can see that the loss function for the discriminator is going down as the number of iterations increases, while the objective function for the Generator is going up. This is showing a normal optimization of the network. We want the objective function of the Generator to increase, given the way we have coded the training loop. We are looking for the maximization of D(G(z)).
 
 
-# Extension : application on the MNIST Dataset
+## Extension : application on the MNIST Dataset
 
 In order to see the behavior of our Discriminator and Generator, we can apply them to the MNIST dataset. A few differences are present at the level of hyperparameters. MNIST images are only black and white, meaning they have only 1 channel instead of 3. The image size is 32 instead of 64 here. The networks are trained in the same manner as before. 
 
@@ -160,11 +160,17 @@ We have seen the principles of GANs and the functioning of DCGANS. We are now fo
 
 ## Introduction and concept
 
-Firstly let us understand why such variations of the traditional GANs have been created. While a very performant tool, GANs can be subject to convergence failure (failure to produce optimal results) and mode collapse (model failing to produce unique results and repeating a similar pattern, quality or classes). The advantage of WGANs is that they solve this issue and they offer higher stability for the training in comparison to traditional GANs. Another advantage is that the value of the global loss is meaningful, in the sense that it gives us a termination criterion.
+Firstly let us understand why such variations of the traditional GANs have been created. While a very performant tool, GANs can be subject to convergence failure (failure to produce optimal results) and mode collapse (model failing to produce unique results and repeating a similar pattern, quality or classes). The advantage of WGANs is that they solve this issue and they offer higher stability for the training in comparison to traditional GANs. Another advantage is that the value of the global loss is meaningful, in the sense that it gives us a termination criterion, contrary to the loss of classic GANs.
 
-We have seen that the main idea in GAN implementation is that we have 2 probability distributions, one for the Generator Pg and one for the Discriminator Pd. The goal is to have similar probability distributions so that generated images look realistic. The issue here is therefore how we define this similarity, or the "distance" between the 2 distributions. In the case of WGAN's, we are focusing on Wasserstein distance measure.
+We have seen that the main idea in GAN implementation is that we have 2 probability distributions, one for the Generator Pg and one for the Discriminator Pd. The goal is to have similar probability distributions so that generated images look realistic. The issue here is therefore how we define this similarity, or the "distance" between the 2 distributions. In the case of WGAN's, we are focusing on Wasserstein distance measure. 
 
-In the training cell, we are intializing the parameters the way we did in the GAN section. This time however we are taking the parameters metioned in the paper by Arjovsky M., Chintala S., Bottou L., (2017): Wasserstein GAN. We are taking a learning rate of 0.0005 and batch size is 64. 2 additional parameters are added, the discriminator iterations and the weight clip.
+![image](https://user-images.githubusercontent.com/114659655/209140474-d8b16a4c-9380-4347-ae12-712015f2c301.png)
+
+**source : [Arjovsky M., Chintala S., Bottou L., (2017): Wasserstein GAN] (https://arxiv.org/abs/1701.07875)**
+
+Here the capital PI represents the set of all joint distributions whose marginal distributions are Pr respectively Pg.
+
+In the training cell, we are intializing the parameters the way we did in the GAN section. This time however we are taking the parameters metioned in the paper by Arjovsky M., Chintala S., Bottou L., (2017): Wasserstein GAN. We are taking a learning rate of 0.0005 and batch size is 64. 2 additional parameters are added, the discriminator iterations and the weight clip. Weight clipping prevents the gradient from getting too large in training, making the model unstable. The idea of weight clipping is that if the gradient gets too large, we rescale the parameters by the value of the weight clip.
 
 
 # References
@@ -172,7 +178,6 @@ In the training cell, we are intializing the parameters the way we did in the GA
 [1^]  [Inkawich, N - DCGAN Tutorial] (https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html)
 
 [2^]  [Radford A., Metz L. Chintala S. (2016) : Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks] (https://arxiv.org/abs/1511.06434)
-
 
 [3^] [Arjovsky M., Chintala S., Bottou L., (2017): Wasserstein GAN] (https://arxiv.org/abs/1701.07875)
 
