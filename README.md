@@ -153,10 +153,15 @@ We can see that the loss function for the discriminator is going down as the num
 
 In order to see the behavior of our Discriminator and Generator, we can apply them to the MNIST dataset. A few differences are present at the level of hyperparameters. MNIST images are only black and white, meaning they have only 1 channel instead of 3. The image size is 32 instead of 64 here and we are using a batch size of 32 as the dataset is smaller. The networks are trained in the same manner as before. We can take a look at the images obtained after 3 epochs :
 
-![image](https://user-images.githubusercontent.com/114659655/209143219-83671e28-94db-47a6-b2b8-79e4a38082b8.png)
+![image](https://user-images.githubusercontent.com/114659655/209212572-214cbe4d-0f23-436c-ac9e-4318d98d01bb.png)
 
 
-Once again, as the networks have not been trained enough, images produced are very noisy.
+
+Once again, as the networks have not been trained enough, images produced are very noisy. We can now take a look at the objective functions of the 2 networks :
+
+![image](https://user-images.githubusercontent.com/114659655/209212613-bfcac060-5852-4f1c-bb6e-ef8f31716c7d.png)
+
+We can see this time that the 2 functions are very close together. The Generator's objective function is increasing whereas the Discriminator's loss function is decreasing, but not at the same pace as before. More training will lead to better results.
 
 
 
