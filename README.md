@@ -137,7 +137,7 @@ The Generator is trained to minimize the loss with respect to the fake images it
 
 Let us look at some of the obtained images after 3 epochs :
 
-![image](https://user-images.githubusercontent.com/114659655/209126836-9ea22860-0a8d-4a70-92fd-95f6d1b27a45.png)
+![image](https://user-images.githubusercontent.com/114659655/209209427-4f39756c-a68d-4a63-a3b6-1b3382c72af3.png)
 
 The images look noisy because of the reduced number of epochs, which we have fixed because of ressource constraints. The networks have not been training enough in order to reproduce visible features. However, for some images some shapes are starting to get visible.
 
