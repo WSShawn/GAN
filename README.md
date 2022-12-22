@@ -81,7 +81,7 @@ The last convolution layer of the discriminator is flattened and passed through 
 
 ![image](https://user-images.githubusercontent.com/114659655/208300570-d18620da-22cf-4d00-a430-b6293ade3069.png)
 
-**source : [6^] [Tsang, S. (2022) : Review: DCGAN — Deep Convolutional Generative Adversarial Network (GAN)] (https://sh-tsang.medium.com/review-dcgan-deep-convolutional-generative-adversarial-network-gan-ec390cded63c)**
+**source : [Tsang, S. (2022) : Review: DCGAN — Deep Convolutional Generative Adversarial Network (GAN)] (https://sh-tsang.medium.com/review-dcgan-deep-convolutional-generative-adversarial-network-gan-ec390cded63c)**
 
 
 
