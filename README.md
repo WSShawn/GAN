@@ -138,7 +138,8 @@ Let us look at some of the obtained images after 3 epochs :
 ![image](https://user-images.githubusercontent.com/114659655/209126836-9ea22860-0a8d-4a70-92fd-95f6d1b27a45.png)
 
 
-![image](https://user-images.githubusercontent.com/114659655/209126807-caccbae5-779b-404e-9a78-eb86c138001d.png)
+![image](https://user-images.githubusercontent.com/114659655/209126914-9e8191b5-5bd3-4ab8-ba01-4a340cdb6832.png)
+
 
 
 # Extension : application on the MNIST Dataset
