@@ -75,6 +75,83 @@ Transposed convolution is then applied by sliding the kernel along the noise vec
 
 Batch Normalization : After the Convolutional Layer, a batch normalization layer is implemented. It normalizes data at batch level so that it can be passed through the activation function afterwards. We are applying Batch Normalization to 2d images using BatchNorm2d().
 
+
+'''
+
+class Generator(nn.Module):
+
+  """Generator class Network
+  
+  Class inherits from pytorch Neural Network Module
+  We are taking the noise vector and then we are passing 2D Transposed Convolutional layers, that are paired with Batch Normalization Layers and a ReLU activation function.
+  Class is composed by the __init__ function for initialization and a function __layers which corresponds to a block of a Convolutional 2D layer, a Batch Normalization Layer 
+  and the ReLU activation function.
+
+  Parameters
+
+  ----------
+  latent_dim : dimension of the latent noise vector
+  channels : number of channels of the output image
+  gen_features : size of feature maps (images obtained after applying the convolution) in the generator 
+  ----------
+
+  References 
+
+  ----------
+
+  [1^]  [Radford A., Metz L. Chintala S. (2016) : Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks] (https://arxiv.org/abs/1511.06434)
+  [2^]  [DCGAN Repository] (https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/GANs/2.%20DCGAN/model.py)
+
+  """
+  ### Pure python implementation can be found here
+  ### https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/GANs/2.%20DCGAN/model.py
+
+
+  def __init__(self, latent_dim, channels, gen_features): 
+    super(Generator, self).__init__()
+    self.gen = nn.Sequential(
+       #Convolution of input Z
+       self._layers(latent_dim, gen_features*16, 4, 1, 0),
+      
+       #Dimension gen_features*16 x 8 x 8
+       self._layers(gen_features*16, gen_features*8, 4, 2, 1),
+
+       #Dimension gen_features*8 x 16 x 16
+       self._layers(gen_features*8, gen_features*4, 4, 2, 1),
+
+       #Dimension gen_features*4 x 32 x 32
+       self._layers(gen_features*4, gen_features*2, 4, 2, 1),
+
+
+       #Dimension gen_features*2 x 64 x 64
+       nn.ConvTranspose2d(gen_features*2, 
+                         channels, 
+                         kernel_size = 4, 
+                         stride = 2, 
+                         padding = 1
+                          ),
+      nn.Tanh()
+      )
+ 
+  #Creation of block of layers : Transposed Convolution, Batch Normalization, ReLU 
+  def _layers(self, channels_input, channels_output, kernel_size, stride, padding): 
+      return nn.Sequential(
+          nn.ConvTranspose2d(channels_input, 
+                             channels_output,
+                             kernel_size,
+                             stride, 
+                             padding, 
+                             bias = False),
+          nn.BatchNorm2d(channels_output),
+          nn.ReLU(),
+      )
+
+
+  def forward(self, x):
+     return self.gen(x)
+
+'''
+
 ### Discriminator
 
 The input of the discriminator is an image in its intial dimensions. The image is processed through Conv2d layers, as the data has to be downsampled. As mentioned before, the filter (Kernel) passes through the set of pixels of the image. Values of the corresponding pixels are multiplied together then summed up to result in the convolved feature. 
