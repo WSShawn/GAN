@@ -482,7 +482,7 @@ for epoch in range(epochs):
         fake = gen(init_noise).detach().cpu()
       img_list.append(utils.make_grid(fake, normalize = True))
     step = step + 1
-
+ 
 ```
 
 ### Results
