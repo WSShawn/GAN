@@ -9,9 +9,9 @@ The main idea behind GANs consists in the competition between 2 neural networks 
 ## Data 
 
 The dataset used in our study is the Celeba Dataset. It represents a collection of more than 200K photos of celebrities, which come in .jpg format. We can plot some of the images in the training set :
-![image](https://user-images.githubusercontent.com/114659655/208944403-5f22e5f0-5290-4fa2-80c8-6811f8318fec.png)
+![image](https://user-images.githubusercontent.com/114659655/209142228-54a4c71e-db87-48c7-b896-89e19cd991a4.png)
 
-**source : [Dertat, A. (2017) : Applied Deep Learning - Part 4: Convolutional Neural Networks] (https://towardsdatascience.com/applied-deep-learning-part-4-convolutional-neural-networks-584bc134c1e2)**
+
 
 
 ## Deep Convolutional Generative Adversarial networks 
@@ -24,7 +24,9 @@ The object at the basis of the convolution process is the kernel. It is represen
 
 The kernel is initialized and then passed along the image, row by row and column by column, until it has slid over all the pixels of the image. A dot product is applied between the kernel and the surface on the image on which it slides, resulting in a sum of element by element product between the kernel and the components of the matrix. The resulting image is the output matrix. Each Kernel position corresponds to a single output pixel, for which the value is calculated by multiplying together the kernel value and the underlying image pixel value for each pixel in the kernel, and summing up the results. As it can be deduced, the size of the output image of the convolution process will be smaller, depending on the size of the initial image and the size of the kernel. In the case of a Convolutional Neural Network, the output obtained by the convolution inside a hidden layer is passed as input to the next hidden layer, after its normalization and passage through the acitvation function. The process of convolution is illustrated below :
 
-![image](https://user-images.githubusercontent.com/114659655/209141946-ac702c5c-2e65-4a98-b31a-4203875754d2.png)
+![1_VVvdh-BUKFh2pwDD0kPeRA@2x](https://user-images.githubusercontent.com/114659655/209142358-c8b6cd4e-294c-4125-a06d-8483b77f4744.gif)
+
+**source : [Dertat, A. (2017) : Applied Deep Learning - Part 4: Convolutional Neural Networks] (https://towardsdatascience.com/applied-deep-learning-part-4-convolutional-neural-networks-584bc134c1e2)**
 
 Stride and padding are the 2 other elements present in the process of convolution. When kernel is being passed along the image, it can be noticed that some pixels participate in more convolution operations than others. It is the case for the pixels in the center, compared to the ones on the corners. Hence, it is less used in feature detection. Padding helps us solve this issue by adding rows and columns of empty pixels. Stride dictates how the kernel moves along the image. A strid of 1 means that the kernel is moving 1 by 1 pixel each time, while a stride of 2 means the kernel moves 2 by 2.
 
