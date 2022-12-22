@@ -53,7 +53,7 @@ Batch Normalization is applied right after the Convolutional Layer. It consists 
 
 ### Activation layers
 
-The activation functions are used depending on the type of output we are looking for.
+The activation functions are used depending on the type of output we are looking for. We are defining the functions according to the paper by Radford A., Metz L. Chintala S. (2016) : Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks. For the generator, we are using ReLU activation functions, except for the output layer which uses Tanh. The choice is based on the fact that the authors observed that a bounded activation function such as Tanh allowed quicker learning during training for the network. For the discriminator, the authors used Leaky ReLU activations because of their good performance.
 
 ## Generator and Discriminator
 
