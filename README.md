@@ -156,6 +156,7 @@ In order to see the behavior of our Discriminator and Generator, we can apply th
 ![image](https://user-images.githubusercontent.com/114659655/209143219-83671e28-94db-47a6-b2b8-79e4a38082b8.png)
 
 
+Once again, as the networks have not been trained enough, images produced are very noisy.
 
 
 
