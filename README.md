@@ -76,7 +76,7 @@ Transposed convolution is then applied by sliding the kernel along the noise vec
 Batch Normalization : After the Convolutional Layer, a batch normalization layer is implemented. It normalizes data at batch level so that it can be passed through the activation function afterwards. We are applying Batch Normalization to 2d images using BatchNorm2d().
 
 
-'''
+'''python
 
 class Generator(nn.Module):
 
