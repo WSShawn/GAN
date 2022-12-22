@@ -53,7 +53,7 @@ Batch Normalization is applied right after the Convolutional Layer. It consists 
 
 ### Activation layers
 
-The activation functions are used depending on the type of output we are looking for. We are defining the functions according to the paper by Radford A., Metz L. Chintala S. (2016) : Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks. For the generator, we are using ReLU activation functions, except for the output layer which uses Tanh. The choice is based on the fact that the authors observed that a bounded activation function such as Tanh allowed quicker learning during training for the network. For the discriminator, the authors used Leaky ReLU activations because of their good performance.
+The activation functions are used depending on the type of output we are looking for. We are defining the functions according to the paper by Radford A., Metz L. Chintala S. (2016) : Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks. For the generator, we are using ReLU activation functions, except for the output layer which uses Tanh. The choice is based on the fact that the authors observed that a bounded activation function such as Tanh allowed quicker learning during training for the network. For the discriminator, the authors used Leaky ReLU activations because of their good performance. As outputs of the Discriminator should be probabilities, the activation function of the last layer wll be sigmoid.
 
 ## Generator and Discriminator
 
@@ -65,6 +65,7 @@ Throughout the implementation of our neural networks, we wil use the Pytorch fra
 The Generator Neural Network's initial input is represented by a latent 1-dimensional noise vector. The length of the latent vector is fixed and can be chosen arbitrarily, but we will choose 100 for our example. We will draw the latent vector from the Gaussian distribution. The dimension of the latent vector will represent the number of channels of the input of the first layer of the network. 
 
 ![1_ULAGAYoGGr5eEB2377ArYA](https://user-images.githubusercontent.com/114659655/201658929-c53960f3-1d5d-4e33-b6c6-f6f88d484100.png)
+***source : [Inkawich, N - DCGAN Tutorial] (https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html) ***
 
 
 Transposed convolution is then applied by sliding the kernel along the noise vector. We need to pass from a 1x100 dimensional vector to the size of the images in the dataset (3x64x64), the convolution applied is transposed in order to upsample the data. Each transposed convolution will produce a feature map inside the generator.
@@ -88,12 +89,6 @@ Model weights will be initialized according to the paper by Radford, Metz and Ch
 
 For a Convolutional Layer, weights represent each matrix element in the Kernel, that will be trained.
 
-```
-def weights_initialization(model):
-  for module in model.modules():
-    if module == nn.Conv2d or module == nn.ConvTranspose2d or module == nn.BatchNorm2d :
-      nn.init.normal_(model.weight.data, 0.0, 0.02)
-```
 
 
 # Training setup 
