@@ -531,6 +531,8 @@ Once again, as the networks have not been trained enough, images produced are ve
 
 We can see this time that the 2 functions are very close together. The Generator's objective function is increasing whereas the Discriminator's loss function is decreasing, but not at the same pace as before. More training will lead to better results.
 
+The implementation of DCGANs on the MNIST dataset can be found in the file DCGAN_MNIST.ipynb file in the src/ folder.
+
 
 
 # Extension : WGAN- Wasserstein Generative Adversarial Networks
@@ -554,7 +556,121 @@ In the training cell, we are intializing the parameters the way we did in the GA
 
 Below we find the training loop of a WGAN :
 
+```
+"""Wasserstein GAN
 
+Usage of a different optimization method than the first DCGANs implemented
+
+Objects
+
+----------
+disc : discriminator
+gen : generator
+gen_optimizer : Adam optimizer taking generator's parameters as input, as well as its hyperparameters
+disc_optimizer : Adam optimizer taking discriminator's parameters as input, as well as its hyperparameters
+criterion : Binary Cross Entropy Loss Function
+step : counter for the number of iterations
+D_losses : list of calculated losses at each iterations for the discriminator
+G_obj : list of calculated values for the objective function at each iteraton for the generator
+img_list : list of generated images
+
+
+References 
+
+----------
+
+[1^] [Arjovsky M., Chintala S., Bottou L., (2017): Wasserstein GAN] (https://arxiv.org/abs/1701.07875)
+[2^] [WGAN Repository] (https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/GANs/3.%20WGAN/train.py)
+
+"""
+
+### Pure python code can be found here
+### https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/GANs/3.%20WGAN/train.py
+
+
+disc2 = Discriminator(n_channels, disc_features).to(device)
+gen2 = Generator(size_latent, n_channels, gen_features).to(device)
+
+#Hyperparameters for training setup
+lr = 0.0005
+batch_size = 64
+latent_dim = 100
+epochs = 3
+
+#Additional hyperparameters for WGAN
+disc_iterations = 5
+weight_clip = 0.01
+
+#Optimizers for WGAN
+gen_optimizer = optim.RMSprop(gen2.parameters(), lr = lr)
+disc_optimizer = optim.RMSprop(disc2.parameters(), lr = lr)
+
+G_losses = []
+D_losses = []
+img_list = []
+ 
+
+#Training Loop
+for epoch in range(epochs):
+  for batch, (real_image, _) in enumerate(dataloader):
+    print("Batch number " + str(batch))
+    
+    #Uploading real image to gpu
+    real_image = real_image.to(device)
+
+    for _ in range(disc_iterations):
+      #Generating noise vectors
+      noise = torch.randn((batch_size, size_latent, 1, 1)).to(device)
+    
+      #Generating fake image from noise
+      fake = gen2(noise)
+
+      #Train discriminator
+
+
+      #Discriminator on real image
+      disc_real = disc2(real_image).reshape(-1)
+      loss_disc_real = criterion(disc_real, torch.ones_like(disc_real))
+
+      #Discriminator on fake image
+      disc_fake = disc2(fake).reshape(-1)
+
+      #Loss of discriminator
+      loss_disc = -loss_disc_real + loss_disc_fake
+      D_losses.append(loss_disc.item())
+      print("Discriminator Loss :" + str(loss_disc))
+
+
+      #Discriminator Adam optimization
+      torch.autograd.set_detect_anomaly(True)
+      disc.zero_grad()
+      disc_loss.backward(retain_graph = True)
+      disc_optimizer.step()
+
+      for parameter in disc.parameters():
+        parameter.data.clamp_(-weight_clip, weight_clip)
+
+      #Train generator
+
+      #Discriminate fake and get loss
+      output = disc2(fake).reshape(-1)
+      generator_loss = criterion(output, torch.ones_like(output))
+      print("Generator Loss :" + str(generator_loss))
+      G_losses.append(generator_loss.item())
+
+      #Generator Adam optimization
+      gen.zero_grad()
+      generator_loss.backward()
+      gen_optimizer.step()
+
+      if batch % 100 == 0:
+
+        with torch.no_grad():
+          fake = gen2(init_noise).detach().cpu()
+          img_list.append(utils.make_grid(fake, padding = 2, normalize = True))
+      step = step + 1
+
+```
 
 
 # References
