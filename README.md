@@ -151,7 +151,7 @@ We can see that the loss function for the discriminator is going down as the num
 
 ## Extension : application on the MNIST Dataset
 
-In order to see the behavior of our Discriminator and Generator, we can apply them to the MNIST dataset. A few differences are present at the level of hyperparameters. MNIST images are only black and white, meaning they have only 1 channel instead of 3. The image size is 32 instead of 64 here. The networks are trained in the same manner as before. We can take a look at the images obtained after 3 epochs :
+In order to see the behavior of our Discriminator and Generator, we can apply them to the MNIST dataset. A few differences are present at the level of hyperparameters. MNIST images are only black and white, meaning they have only 1 channel instead of 3. The image size is 32 instead of 64 here and we are using a batch size of 32 as the dataset is smaller. The networks are trained in the same manner as before. We can take a look at the images obtained after 3 epochs :
 
 ![image](https://user-images.githubusercontent.com/114659655/209143219-83671e28-94db-47a6-b2b8-79e4a38082b8.png)
 
