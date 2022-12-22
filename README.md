@@ -28,6 +28,19 @@ The kernel is initialized and then passed along the image, row by row and column
 
 Stride and padding are the 2 other elements present in the process of convolution. When kernel is being passed along the image, it can be noticed that some pixels participate in more convolution operations than others. It is the case for the pixels in the center, compared to the ones on the corners. Hence, it is less used in feature detection. Padding helps us solve this issue by adding rows and columns of empty pixels. Stride dictates how the kernel moves along the image. A strid of 1 means that the kernel is moving 1 by 1 pixel each time, while a stride of 2 means the kernel moves 2 by 2.
 
+### Transposed Convolution
+
+In our application, namely in the case of the Generator, we will come across Transposed Convolution. The purpose of such procedure is the opposite of the basic convolution, in the sense that it is looking to increase the size, height and width of the input image. Its functioning is also different.
+
+The Transposed Convolution begins by padding the input image with zeros. This procedure happens without using the padding specified by us as argument, but using an implicit padding instead. Then, the kernel is convolved over the padded image with a stride of 1, also implicit and not representing a stride that we specify as argument. We can see an illustration of the process below :
+
+![image](https://user-images.githubusercontent.com/114659655/209095000-6a92a857-d70e-43ce-aa52-bc5d8ade49cd.png)
+*source : Godoy, D. (2022) : What are Transposed Convolutions ? *
+
+
+
+
+
 ### Convolutional Layers
 
 The neural networks we are going to build are going to be formed of Convolutional Layers. Convolutional Layers are meant to process data that is correlated in space. The output of each convolutional layer is a feature map, which corresponds to a spatial projection where certain features are exposed, which have previously been found by the convolutional layer.
@@ -145,6 +158,8 @@ In the training cell, we are intializing the parameters the way we did in the GA
 [3^] [Arjovsky M., Chintala S., Bottou L., (2017): Wasserstein GAN] (https://arxiv.org/abs/1701.07875)
 
 [4^] [WGAN Repository] (https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/GANs/3.%20WGAN/train.py)
+
+[5^] [Godoy, D. (2022) : What are Transposed Convolutions ?] (https://towardsdatascience.com/what-are-transposed-convolutions-2d43ac1a0771#:~:text=Transposed%20convolutions%20are%20like%20the,the%20generator%20part%20of%20GANs.)
 
 
 
