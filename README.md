@@ -76,8 +76,7 @@ Transposed convolution is then applied by sliding the kernel along the noise vec
 Batch Normalization : After the Convolutional Layer, a batch normalization layer is implemented. It normalizes data at batch level so that it can be passed through the activation function afterwards. We are applying Batch Normalization to 2d images using BatchNorm2d().
 
 
-'''python
-
+```
 class Generator(nn.Module):
 
   """Generator class Network
@@ -149,8 +148,7 @@ class Generator(nn.Module):
 
   def forward(self, x):
      return self.gen(x)
-
-'''
+```
 
 ### Discriminator
 
@@ -163,13 +161,121 @@ The last convolution layer of the discriminator is flattened and passed through 
 **source : [Tsang, S. (2022) : Review: DCGAN — Deep Convolutional Generative Adversarial Network (GAN)] (https://sh-tsang.medium.com/review-dcgan-deep-convolutional-generative-adversarial-network-gan-ec390cded63c)**
 
 
+```
+class Discriminator(nn.Module):
+
+  """Discriminator Class Network
+
+  Class inherits from pytorch Neural Network Module
+  Takes an image as input and outputs the probability that the image is real by applying a series of Convolutional 2D, Batch Normalization and LeakyReLU layers using function _layers.
+  Output is generated through a sigmoid function.
+
+  Parameters
+
+  ----------  
+  channels : number of channels in the initial image
+  disc_features : number of channels that are going to change as we are passing through the discriminator
+  ----------
+
+  References 
+
+  ----------
+
+  [1^]  [Radford A., Metz L. Chintala S. (2016) : Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks] (https://arxiv.org/abs/1511.06434)
+  [2^]  [DCGAN Repository] (https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/GANs/2.%20DCGAN/model.py)
+
+  """
+  ### Pure python implementation can be found here
+  ### https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/GANs/2.%20DCGAN/model.py
+
+  def __init__(self, channels, disc_features):
+    super(Discriminator, self).__init__()
+    
+    #Input dimensions : channels x 64 x 64
+    self.disc = nn.Sequential(
+        #Dimension disc_features x 32 x 32
+        nn.Conv2d(
+            channels, 
+            disc_features, 
+            kernel_size = 4, 
+            stride = 2, 
+            padding = 1
+        ),
+        nn.LeakyReLU(0.2),
+        
+        #Dimension disc_features*2 x 16 x 16
+        self._layers(disc_features, disc_features*2, 4, 2, 1),
+
+        #Dimension disc_features*4 x 8 x 8
+        self._layers(disc_features*2, disc_features*4, 4, 2, 1),
+
+        #Dimension disc_features*8 x 4 x 4
+        self._layers(disc_features*4, disc_features*8, 4, 2, 1),
+
+        
+        #Dimension of output : 1 x 1
+        nn.Conv2d(disc_features*8, 1, 4, 2, 0),
+        nn.Sigmoid()
+    )
+   
+    #Creation of block of layers : convolution, normalization, LeakyReLU
+  def _layers(self, channels_input, channels_output, kernel_size, stride, padding):
+       return nn.Sequential(
+         nn.Conv2d(
+            channels_input,
+            channels_output,
+            kernel_size,
+            stride,
+            padding,
+            bias = False
+        ),
+        nn.BatchNorm2d(channels_output),
+        nn.LeakyReLU(0.2)
+    )
+
+  
+  def forward(self, x):
+      return self.disc(x)
+```
 
 
 ## Weights initializiation
 
 Model weights will be initialized according to the paper by Radford, Metz and Chintala (2015). They are normally distributed with mean 0 and standard deviation 0.02. The function weights_initialization takes as input one of the 2 models and transforms input data within the network's hidden layers, respectively the Convolutional, Transposed Convolutional and Batch Normalization Layer.
 
-For a Convolutional Layer, weights represent each matrix element in the Kernel, that will be trained.
+For a Convolutional Layer, weights represent each matrix element in the Kernel, that will be trained in the training loop.
+
+
+```
+def weights_initialization(model):
+
+  """Weights initialization function
+
+  Takes model as input and initializes the weights in each of its layer
+  Initialization of Normally distributed weights with mean 0 and standard deviation 0.2
+
+  Parameters
+
+  ----------  
+  model : Generator or discriminator, taken as input
+  ----------
+
+  References 
+
+  ----------
+
+  [1^]  [Radford A., Metz L. Chintala S. (2016) : Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks] (https://arxiv.org/abs/1511.06434)
+  [2^]  [DCGAN Repository] (https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/GANs/2.%20DCGAN/model.py)
+
+
+  """
+
+  ### Pure python implementation can be found here
+  ### https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/GANs/2.%20DCGAN/model.py
+  for module in model.modules():
+    if module == nn.Conv2d or module == nn.ConvTranspose2d or module == nn.BatchNorm2d :
+      nn.init.normal_(model.weight.data, 0.0, 0.02)
+```
 
 
 
@@ -209,6 +315,132 @@ The Generator is trained to minimize the loss with respect to the fake images it
 - A number of random noise vectors equal to the batch size is created and inputted to the Generator for the creation of fake images
 - Training of the Discriminator : On the real images, Discriminator classifies the image as "real" or "fake", according it the value 0 for "fake" and "1" for real. The obtained result is flattened into a 1 dimensional vector with values 0 or 1, which is compared to a vector composed only of value 1's the same size as the one obtained after the flattening through BCE. The same procedure is applied on the fake images, but this time the obtained tensor for comparison is composed only of value 0's. The obtained BCE loss function is optimized through the Adam optimizer
 - Training of the Generator : Discriminator network is applied to the generated fake images. The result of this operation is flattened on a 1-dimensional vector composed of values 0 or 1 depending on the classification by the discriminator. This obtained vector is compared through the BCE to a vector of the same size full of 1's. The obtained objective function will be maximized through the Adam Optimizer, as we want fake image to be classified as real as often as possible.
+
+```
+"""Training Loop
+
+Initialization of Generator and Discriminator, initialization of their weights and optimizers
+Initialization of Binary Cross-Entropy as loss function
+Initialization of empty lists of losses
+
+
+References 
+
+----------
+
+[1^]  [Radford A., Metz L. Chintala S. (2016) : Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks] (https://arxiv.org/abs/1511.06434)
+[2^]  [Inkawich, N - DCGAN Tutorial] (https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html)
+
+"""
+### Pure python implementation can be found here
+### https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/GANs/2.%20DCGAN/train.py
+
+
+#Networks initialization with given hyperparameters
+disc = Discriminator(n_channels, disc_features).to(device)
+gen = Generator(size_latent, n_channels, gen_features).to(device)
+
+#Weights initialization with mean 0 and sd 0.2
+weights_initialization(disc)
+weights_initialization(gen)
+
+#Adam optimizers initialization for Discriminator and Generator with beta velus corresponding to the paper
+gen_optimizer = optim.Adam(gen.parameters(), lr = lr, betas = (beta1, beta2))
+disc_optimizer = optim.Adam(disc.parameters(), lr = lr, betas = (beta1, beta2))
+
+#Binary Cross-Entropy loss criterion
+criterion = nn.BCELoss()
+
+#Training step
+step = 0
+
+#Initial noise vector initialization for further comparison
+init_noise = torch.randn(64, size_latent, 1, 1).to(device)
+
+gen.train()
+disc.train()
+
+#List of losses
+D_losses = []
+G_losses = []
+img_list = []
+
+#Training Loop
+for epoch in range(epochs):
+  for batch, (real_image, target) in enumerate(dataloader):
+    print("Batch number " + str(batch))
+    
+    #Uploading real image to gpu
+    real_image = real_image.to(device)
+
+    #Generating noise vectors
+    noise = torch.randn((batch_size, size_latent, 1, 1)).to(device)
+    
+    #Generating fake image from noise
+    fake = gen(noise)
+
+    #Train discriminator
+
+    #Discriminator loss on real image
+    disc_real = disc(real_image).reshape(-1)
+    loss_disc_real = criterion(disc_real, torch.ones_like(disc_real))
+
+    #Discriminator accuracy on real image
+    pred_reals = torch.sum(disc_real)
+    length_real = disc_real.size(dim=0)
+    acc_real = pred_reals/length_real
+
+
+    #Discriminator loss on fake image
+    disc_fake = disc(fake).reshape(-1)
+    loss_disc_fake = criterion(disc_fake, torch.zeros_like(disc_fake))
+
+    #Discriminator accuracy
+    pred_fakes = torch.sum(disc_fake)
+    length_fake = disc_fake.size(dim=0)
+    acc_fake = (length_fake - pred_fakes)/length_fake
+
+    #Total discriminator accuracy
+    disc_accuracy = (acc_real + acc_fake)/2
+    print("Discriminator Average Accuracy :" + str(disc_accuracy))
+
+
+    #Total discriminator loss
+    disc_loss = (loss_disc_real + loss_disc_fake)
+    D_losses.append(disc_loss.item())
+    print("Discriminator Loss :" + str(disc_loss))
+
+    #Discriminator loss optimization
+    disc_loss.retain_grad()
+    disc.zero_grad()
+    disc_loss.backward(retain_graph = True)
+    disc_optimizer.step()
+
+
+    #Train generator
+
+    #Discriminate fake and get objective function
+    output = disc(fake).reshape(-1)
+    generator_loss = criterion(output, torch.ones_like(output))
+    G_losses.append(generator_loss.item())
+    print("Generator objective function :" + str(generator_loss))
+
+
+    #Generator Adam optimization
+    generator_loss.retain_grad()
+    gen.zero_grad()
+    generator_loss.backward()
+    gen_optimizer.step()
+
+    #Appending images in the image list every 100th step :
+    if step % 100 == 0:
+
+      with torch.no_grad():
+        fake = gen(init_noise).detach().cpu()
+      img_list.append(utils.make_grid(fake, normalize = True))
+    step = step + 1
+
+```
 
 ### Results
 
