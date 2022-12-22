@@ -28,7 +28,7 @@ The kernel is initialized and then passed along the image, row by row and column
 
 **source : [Dertat, A. (2017) : Applied Deep Learning - Part 4: Convolutional Neural Networks] (https://towardsdatascience.com/applied-deep-learning-part-4-convolutional-neural-networks-584bc134c1e2)**
 
-Stride and padding are the 2 other elements present in the process of convolution. When kernel is being passed along the image, it can be noticed that some pixels participate in more convolution operations than others. It is the case for the pixels in the center, compared to the ones on the corners. Hence, it is less used in feature detection. Padding helps us solve this issue by adding rows and columns of empty pixels. Stride dictates how the kernel moves along the image. A strid of 1 means that the kernel is moving 1 by 1 pixel each time, while a stride of 2 means the kernel moves 2 by 2.
+Stride and padding are the 2 other elements present in the process of convolution. When kernel is being passed along the image, it can be noticed that some pixels participate in more convolution operations than others. It is the case for the pixels in the center, compared to the ones on the corners. Hence, it is less used in feature detection. Padding helps us solve this issue by adding rows and columns of empty pixels. Stride dictates how the kernel moves along the image. A stride of 1 means that the kernel is moving 1 by 1 pixel each time, while a stride of 2 means the kernel moves 2 by 2 pixels.
 
 ### Transposed Convolution
 
