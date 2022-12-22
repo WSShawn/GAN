@@ -35,7 +35,7 @@ In our application, namely in the case of the Generator, we will come across Tra
 The Transposed Convolution begins by padding the input image with zeros. This procedure happens without using the padding specified by us as argument, but using an implicit padding instead. Then, the kernel is convolved over the padded image with a stride of 1, also implicit and not representing a stride that we specify as argument. We can see an illustration of the process below :
 
 ![image](https://user-images.githubusercontent.com/114659655/209095000-6a92a857-d70e-43ce-aa52-bc5d8ade49cd.png)
-*source : Godoy, D. (2022) : What are Transposed Convolutions ? *
+**source : Godoy, D. (2022) : What are Transposed Convolutions ?**
 
 
 
