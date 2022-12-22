@@ -38,14 +38,20 @@ The Transposed Convolution begins by padding the input image with zeros. This pr
 **source : Godoy, D. (2022) : What are Transposed Convolutions ?**
 
 
-
+Let us concentrate on the stride and padding that we introduce as arguments. Choosing a stride with a value superior to 1 will modify the process of transposed convolution. Zero-valued pixels will be introduced in both the columns and the rows of the existing image. The stride introduced minus 1 will give the number of columns and rows to be inserted. For example, a stride of 2 will introduce 1 row and 1 column of zeros. Then, the padding is added as mentioned before and usual convolution with a fixed stride of 1 is applied.
 
 
 ### Convolutional Layers
 
 The neural networks we are going to build are going to be formed of Convolutional Layers. Convolutional Layers are meant to process data that is correlated in space. The output of each convolutional layer is a feature map, which corresponds to a spatial projection where certain features are exposed, which have previously been found by the convolutional layer.
 
-The layers are interconnected : the second layer takes as input the output from the first layer and so on. This can be seen in the values of the arguments that are passed onto each layer. For example, the number of output channels from the first layer will be the number of input channels of the second layer. We implement the layers using they torch.nn module.
+The layers of the network are interconnected : the second layer takes as input the output from the first layer and so on. This can be seen in the values of the arguments that are passed onto each layer. For example, the number of output channels from the first layer will be the number of input channels of the second layer. We implement the layers using they torch.nn module.
+
+### Batch Normalization Layers
+
+Batch Normalization is applied right after the Convolutional Layer. It consists in the normalization of the activation vectors using the mean and standard deviation of the current bach. The term "normalization" refers to constraining the data to having values between 0 and 1. Given that the data points in an image are pixels, which have a value between 0 and 225, it is necessary to normalize them to a range that is manageable, otherwise the weights of the neural network will be affected during trainin by becoming too large and hence producing pixels on a very wide range of values for the output image.
+
+### Activation layers
 
 
 ## Generator and Discriminator
