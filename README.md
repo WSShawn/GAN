@@ -65,7 +65,7 @@ Throughout the implementation of our neural networks, we wil use the Pytorch fra
 The Generator Neural Network's initial input is represented by a latent 1-dimensional noise vector. The length of the latent vector is fixed and can be chosen arbitrarily, but we will choose 100 for our example. We will draw the latent vector from the Gaussian distribution. The dimension of the latent vector will represent the number of channels of the input of the first layer of the network. 
 
 ![1_ULAGAYoGGr5eEB2377ArYA](https://user-images.githubusercontent.com/114659655/201658929-c53960f3-1d5d-4e33-b6c6-f6f88d484100.png)
-**source : [Inkawich, N - DCGAN Tutorial] (https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html) **
+**source : [Inkawich, N - DCGAN Tutorial] (https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html)**
 
 
 Transposed convolution is then applied by sliding the kernel along the noise vector. We need to pass from a 1x100 dimensional vector to the size of the images in the dataset (3x64x64), the convolution applied is transposed in order to upsample the data. Each transposed convolution will produce a feature map inside the generator.
@@ -97,13 +97,13 @@ After the Discriminator and the Generator have been initialized given the hyperp
 
 ![image](https://user-images.githubusercontent.com/114659655/208265282-205b6375-2370-408f-998e-27ed7c864ba5.png)
 
-**source : [Inkawich, N - DCGAN Tutorial] (https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html) **
+**source : [Inkawich, N - DCGAN Tutorial] (https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html)**
 
 Here D(G(z)) is the probability that the output of the Generator G is classified as a real image. Let us look now at the Binary Cross Entropy Loss : 
 
 ![image](https://user-images.githubusercontent.com/114659655/208265308-6345ba98-1718-48be-9d65-2294af4cc528.png)
 
-**source : [Inkawich, N - DCGAN Tutorial] (https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html) **
+**source : [Inkawich, N - DCGAN Tutorial] (https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html)**
 
 It can be noticed that the 2 functions look alike. Indeed, the value of y can be dictated so as to correspond to the objective function of each of the 2 networks. For the Generator, we are looking for min log(1 - D(G(z))) which is equivalent to max log(D(G(z)), whereas for the Discriminator we are looking for min log(D(x)) + log(1-D(G(z)). 
 
