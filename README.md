@@ -9,7 +9,7 @@ The main idea behind GANs consists in the competition between 2 neural networks 
 ## Data 
 
 The dataset used in our study is the Celeba Dataset. It represents a collection of more than 200K photos of celebrities, which come in .jpg format. We can plot some of the images in the training set :
-![image](https://user-images.githubusercontent.com/114659655/209142228-54a4c71e-db87-48c7-b896-89e19cd991a4.png)
+![image](https://user-images.githubusercontent.com/114659655/209142529-fabd6e5a-4f66-407f-b67c-fd4cffc5e7f3.png)
 
 
 
