@@ -532,7 +532,7 @@ Let us now look at the graph of the evolution of the objective functions for bot
 ![image](https://user-images.githubusercontent.com/114659655/209132815-a01c3cce-ecef-4d8b-a450-3ad308c854b7.png)
 
 
-We can see that the loss function for the discriminator is going down very quickly as the number of iterations increases, while the objective function for the Generator is actually going up. This explains the noisy result that we have obtained. Indeed, the Discriminator is much more performant than the Generator. 
+We can see that the loss function for the discriminator is going down very quickly as the number of iterations increases, while the objective function for the Generator is actually going up. This explains the noisy result that we have obtained. Indeed, the Discriminator is much more performant than the Generator. The code for the graph plot is found below :
 
 ```
 """Plot of objective functions
