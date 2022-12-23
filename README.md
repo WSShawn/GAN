@@ -344,11 +344,12 @@ The Generator is trained to minimize the loss with respect to the fake images it
 - Training of the Generator : Discriminator network is applied to the generated fake images. The result of this operation is flattened on a 1-dimensional vector composed of values 0 or 1 depending on the classification by the discriminator. This obtained vector is compared through the BCE to a vector of the same size full of 1's. The obtained loss function will be minimzed through the Adam Optimizer, as we want fake image to be classified as real as often as possible.
 
 ```
-"""Training Loop
+"""Training Loop with alternative learning rates
 
 Initialization of Generator and Discriminator, initialization of their weights and optimizers
 Initialization of Binary Cross-Entropy as loss function
 Initialization of empty lists of losses
+Usage of lr/4 for the generator and 0.00000138 for the discriminator as learning rates
 
 Passage through each batch and each epoch and optimization of objective functions for the discriminator and the generator at each iteration. 
 Printing of the average accuracy of the discriminator
@@ -373,6 +374,8 @@ References
 
 [1^]  [Radford A., Metz L. Chintala S. (2016) : Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks] (https://arxiv.org/abs/1511.06434)
 [2^]  [Inkawich, N - DCGAN Tutorial] (https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html)
+[3^]  [DCGAN Repository] (https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/GANs/2.%20DCGAN)
+
 
 """
 ### Pure python implementation can be found here
@@ -388,8 +391,8 @@ weights_initialization(disc)
 weights_initialization(gen)
 
 #Adam optimizers initialization for Discriminator and Generator with beta velus corresponding to the paper
-gen_optimizer = optim.Adam(gen.parameters(), lr = lr, betas = (beta1, beta2))
-disc_optimizer = optim.Adam(disc.parameters(), lr = lr, betas = (beta1, beta2))
+gen_optimizer = optim.Adam(gen.parameters(), lr = lr/4, betas = (beta1, beta2))
+disc_optimizer = optim.Adam(disc.parameters(), lr = 0.00000138, betas = (beta1, beta2))
 
 #Binary Cross-Entropy loss criterion
 criterion = nn.BCELoss()
@@ -489,7 +492,7 @@ for epoch in range(epochs):
 
     #Adding loss value for generator in loss list and printing it
     G_losses.append(generator_loss.item())
-    print("Generator objective function :" + str(generator_loss.item()))
+    print("Generator objective function :" + str(generator_loss))
 
 
     #Appending images in the image list every 100th step :
@@ -502,6 +505,7 @@ for epoch in range(epochs):
         img_list.append(utils.make_grid(fake, normalize = True))
     #Incrementing number of steps
     step = step + 1
+
 
 
  
