@@ -341,7 +341,7 @@ The Generator is trained to minimize the loss with respect to the fake images it
 - A number of real images equal to the batch size are taken from the dataset and and sent to CUDA
 - A number of random noise vectors equal to the batch size is created and inputted to the Generator for the creation of fake images
 - Training of the Discriminator : On the real images, Discriminator classifies the image as "real" or "fake", according it the value 0 for "fake" and "1" for real. The obtained result is flattened into a 1 dimensional vector with values 0 or 1, which is compared to a vector composed only of value 1's the same size as the one obtained after the flattening through BCE. The same procedure is applied on the fake images, but this time the obtained tensor for comparison is composed only of value 0's. The obtained BCE loss function is optimized through the Adam optimizer
-- Training of the Generator : Discriminator network is applied to the generated fake images. The result of this operation is flattened on a 1-dimensional vector composed of values 0 or 1 depending on the classification by the discriminator. This obtained vector is compared through the BCE to a vector of the same size full of 1's. The obtained objective function will be maximized through the Adam Optimizer, as we want fake image to be classified as real as often as possible.
+- Training of the Generator : Discriminator network is applied to the generated fake images. The result of this operation is flattened on a 1-dimensional vector composed of values 0 or 1 depending on the classification by the discriminator. This obtained vector is compared through the BCE to a vector of the same size full of 1's. The obtained loss function will be minimzed through the Adam Optimizer, as we want fake image to be classified as real as often as possible.
 
 ```
 """Training Loop
@@ -389,7 +389,7 @@ weights_initialization(gen)
 
 #Adam optimizers initialization for Discriminator and Generator with beta velus corresponding to the paper
 gen_optimizer = optim.Adam(gen.parameters(), lr = lr, betas = (beta1, beta2))
-disc_optimizer = optim.Adam(disc.parameters(), lr = lr, betas = (beta1, beta2))
+disc_optimizer = optim.Adam(disc.parameters(), lr = 0.000001, betas = (beta1, beta2))
 
 #Binary Cross-Entropy loss criterion
 criterion = nn.BCELoss()
@@ -398,8 +398,10 @@ criterion = nn.BCELoss()
 step = 0
 
 #Initial noise vector initialization for further comparison
-init_noise = torch.randn(64, size_latent, 1, 1).to(device)
+init_noise = torch.randn(32, size_latent, 1, 1).to(device)
 
+
+#Putting generator and discriminator in training mode
 gen.train()
 disc.train()
 
@@ -409,7 +411,10 @@ G_obj = []
 img_list = []
 
 #Training Loop
+
+#For each epoch 
 for epoch in range(epochs):
+  #For each batch in the dataLoader
   for batch, (real_image, target) in enumerate(dataloader):
     print("Batch number " + str(batch))
     
@@ -426,9 +431,11 @@ for epoch in range(epochs):
 
     #Discriminator loss on real image
     disc_real = disc(real_image).reshape(-1)
+
+    #Loss function computation
     loss_disc_real = criterion(disc_real, torch.ones_like(disc_real))
 
-    #Discriminator accuracy on real image
+    #Discriminator accuracy on real images : proportion of correctly predicted real images
     pred_reals = torch.sum(disc_real)
     length_real = disc_real.size(dim=0)
     acc_real = pred_reals/length_real
@@ -438,42 +445,47 @@ for epoch in range(epochs):
     disc_fake = disc(fake).reshape(-1)
     loss_disc_fake = criterion(disc_fake, torch.zeros_like(disc_fake))
 
-    #Discriminator accuracy
+    #Discriminator accuracy on fake images : proportion of correctly predicted fake images
     pred_fakes = torch.sum(disc_fake)
     length_fake = disc_fake.size(dim=0)
     acc_fake = (length_fake - pred_fakes)/length_fake
 
-    #Total discriminator accuracy
+    #Average discriminator accuracy
     disc_accuracy = (acc_real + acc_fake)/2
     print("Discriminator Average Accuracy :" + str(disc_accuracy))
 
 
     #Total discriminator loss
-    disc_loss = (loss_disc_real + loss_disc_fake)
-    D_losses.append(disc_loss.item())
-    print("Discriminator Loss :" + str(disc_loss))
+    disc_loss = (loss_disc_real + loss_disc_fake)/2
 
-    #Discriminator loss optimization
-    disc_loss.retain_grad()
+    D_losses.append(disc_loss.item())
+    print("Discriminator Loss function:" + str(disc_loss.item()))
+
+    #Update discriminator
     disc.zero_grad()
+    
+    #Calculate gradient for discriminator in backward pass
     disc_loss.backward(retain_graph = True)
     disc_optimizer.step()
 
-
     #Train generator
 
-    #Discriminate fake and get objective function
+
+    #Vector of discriminator predictions on fake
     output = disc(fake).reshape(-1)
     generator_obj = criterion(output, torch.ones_like(output))
+
+    gen.zero_grad()
+
+    #Calcuate gradients for generator
+    generator_obj.backward()
+
+    gen_optimizer.step()
+
+    #Adding loss value for generator in loss list and printing it
     G_obj.append(generator_obj.item())
     print("Generator objective function :" + str(generator_obj))
 
-
-    #Generator Adam optimization
-    generator_obj.retain_grad()
-    gen.zero_grad()
-    generator_obj.backward()
-    gen_optimizer.step()
 
     #Appending images in the image list every 100th step :
     if step % 100 == 0:
@@ -482,6 +494,7 @@ for epoch in range(epochs):
         fake = gen(init_noise).detach().cpu()
       img_list.append(utils.make_grid(fake, normalize = True))
     step = step + 1
+
  
 ```
 
@@ -491,7 +504,7 @@ Let us look at some of the obtained images after 3 epochs :
 
 ![image](https://user-images.githubusercontent.com/114659655/209209427-4f39756c-a68d-4a63-a3b6-1b3382c72af3.png)
 
-The images look noisy because of the reduced number of epochs, which we have fixed because of ressource constraints. The networks have not been training enough in order to reproduce visible features. However, for some images some shapes are starting to get visible. Below we find the code for illustrating of some of the obtained images:
+The images look very noisy. We cannot conclude on the performance of our networks based on this result. Let us take a look at the loss functions for the generator and the discriminator
 
 ```
 """Plot of obtained images throught imshow
@@ -519,8 +532,7 @@ Let us now look at the graph of the evolution of the objective functions for bot
 ![image](https://user-images.githubusercontent.com/114659655/209132815-a01c3cce-ecef-4d8b-a450-3ad308c854b7.png)
 
 
-We can see that the loss function for the discriminator is going down as the number of iterations increases, while the objective function for the Generator is going up. This is showing a normal optimization of the network. We want the objective function of the Generator to increase, given the way we have coded the training loop. We are looking for the maximization of D(G(z)). Below we find the code for the objective functions plotting :
-
+We can see that the loss function for the discriminator is going down very quickly as the number of iterations increases, while the objective function for the Generator is actually going up. This explains the noisy result that we have obtained. Indeed, the Discriminator is much more performant than the Generator. 
 
 ```
 """Plot of objective functions
@@ -545,6 +557,20 @@ plt.legend()
 plt.show()
 ```
 
+We have to balance the performance of the Generator and the Discriminator. One of the solutions for this issue is to change the learning rate so that the discriminator learns more slowly. Empirically, we have found that a learning rate of 0.00000138 for the discriminator and a division of the initial learning rate by 4 for the generator induces more stability in the training. Let us look at the obtained loss functions with this learning rate after 1 epoch:
+
+![image](https://user-images.githubusercontent.com/114659655/209312508-1b832161-ee66-4604-b816-f99f4e12d4a3.png)
+
+
+
+The results look more stable, the Generator is learning better and is able to beat the discriminator to a certain point. We can plot some of the images obtained from this training loop :
+
+![image](https://user-images.githubusercontent.com/114659655/209312618-159b5be5-1aba-4673-94c4-e8f3a76ade21.png)
+
+
+We can notice that the images are a bit more suggestive this time, even from the first epoch.
+
+
 
 ## Extension : application on the MNIST Dataset
 
@@ -553,8 +579,7 @@ In order to see the behavior of our Discriminator and Generator, we can apply th
 ![image](https://user-images.githubusercontent.com/114659655/209212572-214cbe4d-0f23-436c-ac9e-4318d98d01bb.png)
 
 
-
-Once again, as the networks have not been trained enough, images produced are very noisy. We can now take a look at the objective functions of the 2 networks :
+The learning rates used here were the ones we found empirically before. As the networks have not been trained enough, images produced are very noisy. We can now take a look at the objective functions of the 2 networks :
 
 ![image](https://user-images.githubusercontent.com/114659655/209212613-bfcac060-5852-4f1c-bb6e-ef8f31716c7d.png)
 
