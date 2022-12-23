@@ -102,7 +102,7 @@ Transposed convolution is then applied by sliding the kernel along the noise vec
 
 Batch Normalization : After the Convolutional Layer, a batch normalization layer is implemented. It normalizes data at batch level so that it can be passed through the activation function afterwards. We are applying Batch Normalization to 2d images using BatchNorm2d().
 
-The generator that we have implemented consists in 4 blocks of layers, followed by a Transposed Convolutional layer and a Hyperbolic Tangent activation function, following the architecture in the paper by Radford A., Metz L. Chintala S. (2016).
+The generator that we have implemented consists in 4 blocks of layers, followed by a Transposed Convolutional layer and a Hyperbolic Tangent activation function, following the architecture in the paper by Radford A., Metz L. Chintala S. (2016). We are using a kernel of 4x4 as mentioned before. Every layer, except the first one, uses a stride of 2 and a padding of 1. The value of stride 2 ensures an output of increased dimension. Padding of 1 is added in order to imply the usage of every pixel of the input image in an equal number of transposed convolutions. For the first layer, the value of the padding is 0 and the stride is 1, as the input is 1-dimensional and hence the transposed convolution of the first layer is equivalent to a usual convolution with stride 1 and no padding.
 
 
 ```
@@ -189,6 +189,8 @@ The input of the discriminator is an image in its intial dimensions. The image i
 **source : Tsang, S. (2022) : Review: DCGAN — Deep Convolutional Generative Adversarial Network (GAN) (https://sh-tsang.medium.com/review-dcgan-deep-convolutional-generative-adversarial-network-gan-ec390cded63c)**
 
 The Discriminator is formed by a first Convolutional layer, followed by a Leaky ReLU activation function and 3 blocks of layers, each containing a Convolutinal Layer, a Batch Normalization layer and a Leaky ReLU activation function. The last convolution layer of the discriminator is flattened and passed through a sigmoid function. The Discriminator will therefore output the label of the image, 0 corresponding for 'fake' and 1 corresponding for 'real'. The following image illustrates the architecture of the Discriminator Network.
+
+We are using a kernel of size 4x4 as mentioned before. Additionally, we are using a stride of 2 and a padding of 1 in every layer except the last one. Hence, every pixel is  involved in the same number of convolutions, as the kernel is moving 2 by 2 pixels, avoiding thus involving the same pixels in multiple convolutions given its size of 4x4. The last layer has a padding of 0, as the output is flattened into a 1-dimensional vector.
 
 
 ```
