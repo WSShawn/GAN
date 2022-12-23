@@ -344,7 +344,7 @@ The Generator is trained to minimize the loss with respect to the fake images it
 - Training of the Generator : Discriminator network is applied to the generated fake images. The result of this operation is flattened on a 1-dimensional vector composed of values 0 or 1 depending on the classification by the discriminator. This obtained vector is compared through the BCE to a vector of the same size full of 1's. The obtained loss function will be minimzed through the Adam Optimizer, as we want fake image to be classified as real as often as possible.
 
 ```
-"""Training Loop
+"""Training Loop with alternative learning rates
 
 Initialization of Generator and Discriminator, initialization of their weights and optimizers
 Initialization of Binary Cross-Entropy as loss function
@@ -389,7 +389,7 @@ weights_initialization(gen)
 
 #Adam optimizers initialization for Discriminator and Generator with beta velus corresponding to the paper
 gen_optimizer = optim.Adam(gen.parameters(), lr = lr, betas = (beta1, beta2))
-disc_optimizer = optim.Adam(disc.parameters(), lr = 0.000001, betas = (beta1, beta2))
+disc_optimizer = optim.Adam(disc.parameters(), lr = lr, betas = (beta1, beta2))
 
 #Binary Cross-Entropy loss criterion
 criterion = nn.BCELoss()
@@ -407,7 +407,7 @@ disc.train()
 
 #List of losses
 D_losses = []
-G_obj = []
+G_losses = []
 img_list = []
 
 #Training Loop
@@ -427,9 +427,9 @@ for epoch in range(epochs):
     #Generating fake image from noise
     fake = gen(noise)
 
-    #Train discriminator
+    ###Train discriminator###
 
-    #Discriminator loss on real image
+    #Discriminator loss on real image : reshaping to have a single value for each image
     disc_real = disc(real_image).reshape(-1)
 
     #Loss function computation
@@ -441,7 +441,7 @@ for epoch in range(epochs):
     acc_real = pred_reals/length_real
 
 
-    #Discriminator loss on fake image
+    #Discriminator loss on fake image : reshaping to have a single value for each image
     disc_fake = disc(fake).reshape(-1)
     loss_disc_fake = criterion(disc_fake, torch.zeros_like(disc_fake))
 
@@ -465,35 +465,44 @@ for epoch in range(epochs):
     disc.zero_grad()
     
     #Calculate gradient for discriminator in backward pass
+    #Setting retain graph = True in order to allow re-utilisation of fake in the Generator optimization part
     disc_loss.backward(retain_graph = True)
+
+    #Update discriminator
     disc_optimizer.step()
 
-    #Train generator
+    ###Train generator###
 
 
-    #Vector of discriminator predictions on fake
+    #Vector of discriminator predictions on fake images : reshaping to have a single value for each image
     output = disc(fake).reshape(-1)
-    generator_obj = criterion(output, torch.ones_like(output))
 
+    #Computing generator loss function
+    generator_loss = criterion(output, torch.ones_like(output))
     gen.zero_grad()
 
     #Calcuate gradients for generator
-    generator_obj.backward()
+    generator_loss.backward()
 
+    #Update generator
     gen_optimizer.step()
 
     #Adding loss value for generator in loss list and printing it
-    G_obj.append(generator_obj.item())
-    print("Generator objective function :" + str(generator_obj))
+    G_losses.append(generator_loss.item())
+    print("Generator objective function :" + str(generator_loss.item()))
 
 
     #Appending images in the image list every 100th step :
     if step % 100 == 0:
-
+      
+      #Generating fake images from initial noise with optimized generator
       with torch.no_grad():
         fake = gen(init_noise).detach().cpu()
-      img_list.append(utils.make_grid(fake, normalize = True))
+        #Appending list 
+        img_list.append(utils.make_grid(fake, normalize = True))
+    #Incrementing number of steps
     step = step + 1
+
 
  
 ```
