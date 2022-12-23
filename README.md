@@ -344,7 +344,7 @@ The Generator is trained to minimize the loss with respect to the fake images it
 - Training of the Generator : Discriminator network is applied to the generated fake images. The result of this operation is flattened on a 1-dimensional vector composed of values 0 or 1 depending on the classification by the discriminator. This obtained vector is compared through the BCE to a vector of the same size full of 1's. The obtained loss function will be minimzed through the Adam Optimizer, as we want fake image to be classified as real as often as possible.
 
 ```
-"""Training Loop with alternative learning rates
+"""Training Loop
 
 Initialization of Generator and Discriminator, initialization of their weights and optimizers
 Initialization of Binary Cross-Entropy as loss function
