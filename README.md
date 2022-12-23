@@ -579,7 +579,7 @@ In order to see the behavior of our Discriminator and Generator, we can apply th
 ![image](https://user-images.githubusercontent.com/114659655/209212572-214cbe4d-0f23-436c-ac9e-4318d98d01bb.png)
 
 
-The learning rates used here were the ones we found empirically before. As the networks have not been trained enough, images produced are very noisy. We can now take a look at the objective functions of the 2 networks :
+The learning rates used here were the initial learning rates of 0.0002 given by the authors. As the networks have not been trained enough, images produced are very noisy. We can now take a look at the objective functions of the 2 networks :
 
 ![image](https://user-images.githubusercontent.com/114659655/209212613-bfcac060-5852-4f1c-bb6e-ef8f31716c7d.png)
 
