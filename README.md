@@ -619,9 +619,90 @@ We have seen that the main idea in GAN implementation is that we have 2 probabil
 
 Here the capital PI represents the set of all joint distributions whose marginal distributions are Pr respectively Pg. The other name of this distance measure is "Earth Mover distance", which comes from the fact that it measures the "energy" needed to shift one probability distribution towards another one. We are using the term "energy" as the Wasserstein distance measure gives the minimum product between the mass of the distribution to be shifted and the distance along which it has to be moved. This measure of divergence is different from the one present in classical Generative Adversarial Networks, which is called "Jensen Shannon Divergence" (JS) and takes the form that we have seen in the previous section. One main difference between the Wasserstein and the Jensen Shannon Divergence measure is that the Wasserstein divergence measure is a horizontal measure, contrary to JS. To be more precise, it corresponds to the distance between densities on the X-axis, while the JS divergence is measured on the Y-axis. One main advantage of the Wasserstein distance is that it is differentiable almost everywhere, which will allow us to reach optimality while training. In addition to this, the value of the Wasserstein distance is more meaningful, in the sense that the closer the distributions get, it converges to 0.
 
-## The critic
+## The Critic
 
 The Discriminator in the case of WGANS takes the name of "critic". Its functioning is similar to the Discriminator we have seen in the case of GANs, but its objective function is different. While the discriminator is trained to correctly identify samples from the 2 distributions Pg and Pd, the critic is used to predict the distance between the 2 distributions.
+
+In order to implement the critic, we are taking the code of the Discriminator we have defined before and remove the Sigmoid function. We are doing so as the role of the critic is no longer to give a binary classification.
+
+
+```
+class Critic(nn.Module):
+
+ """Critic implementation
+
+  Critic neural network implementation from the Discriminator, without Sigmoid function
+
+
+  Parameters
+
+  ----------  
+  channels : number of channels in the initial image
+  disc_features : number of channels that are going to change as we are passing through the discriminator
+  ----------
+
+  References 
+
+  ----------
+
+
+  [1^] [Arjovsky M., Chintala S., Bottou L., (2017): Wasserstein GAN] (https://arxiv.org/abs/1701.07875)
+  [2^] [WGAN Repository] (https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/GANs/3.%20WGAN/model.py)
+
+  """
+  ### Pure python implementation can be found here
+  ### https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/GANs/3.%20WGAN/model.py
+
+
+ def __init__(self, channels, disc_features):
+    super(Critic, self).__init__()
+    
+    #Input dimensions : channels x 64 x 64
+    self.critic = nn.Sequential(
+        #Dimension disc_features x 32 x 32
+        nn.Conv2d(
+            channels, 
+            disc_features, 
+            kernel_size = 4, 
+            stride = 2, 
+            padding = 1
+        ),
+        nn.LeakyReLU(0.2),
+        
+        #Dimension disc_features*2 x 16 x 16
+        self._layers(disc_features, disc_features*2, 4, 2, 1),
+
+        #Dimension disc_features*4 x 8 x 8
+        self._layers(disc_features*2, disc_features*4, 4, 2, 1),
+
+        #Dimension disc_features*8 x 4 x 4
+        self._layers(disc_features*4, disc_features*8, 4, 2, 1),
+
+        
+        #Dimension of output : 1 x 1
+        nn.Conv2d(disc_features*8, 1, 4, 2, 0),
+    )
+   
+    #Creation of block of layers : convolution, normalization, LeakyReLU
+ def _layers(self, channels_input, channels_output, kernel_size, stride, padding):
+       return nn.Sequential(
+         nn.Conv2d(
+            channels_input,
+            channels_output,
+            kernel_size,
+            stride,
+            padding,
+            bias = False
+        ),
+        nn.BatchNorm2d(channels_output),
+        nn.LeakyReLU(0.2)
+    )
+
+  
+ def forward(self, x):
+      return self.critic(x)
+```
+
 
 ## The Generator
 
@@ -629,7 +710,7 @@ We have seen that the role of the generator in classical GANs (including DCGANs)
 
 ## Training WGANs
 
-In the training cell, we are intializing the parameters the way we did in the GAN section. This time however we are taking the parameters metioned in the paper by Arjovsky M., Chintala S., Bottou L., (2017): Wasserstein GAN. We are taking a learning rate of 0.0005 and batch size is 64. 2 additional parameters are added, the discriminator iterations and the weight clip. Weight clipping prevents the gradient from getting too large in training, making the model unstable. The idea of weight clipping is that if the gradient gets too large, we rescale the parameters by the value of the weight clip.
+In the training cell, we are intializing the parameters the way we did in the GAN section. This time however we are taking the parameters metioned in the paper by Arjovsky M., Chintala S., Bottou L., (2017): Wasserstein GAN. We are taking a learning rate of 0.00005 and batch size is 64. 2 additional parameters are added, the discriminator iterations and the weight clip. Weight clipping prevents the gradient from getting too large in training, making the model unstable. The idea of weight clipping is that if the gradient gets too large, we rescale the parameters by the value of the weight clip.
 
 
 
@@ -667,16 +748,24 @@ References
 ### https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/GANs/3.%20WGAN/train.py
 
 
-disc2 = Discriminator(n_channels, disc_features).to(device)
+disc2 = Critic(n_channels, disc_features).to(device)
 gen2 = Generator(size_latent, n_channels, gen_features).to(device)
 
+#Weights initialization with mean 0 and sd 0.2
+weights_initialization(disc2)
+weights_initialization(gen2)
+
+#Enabling training mode for critic and generator
+disc2.train()
+gen2.train()
+
 #Hyperparameters for training setup
-lr = 0.0005
+lr = 0.00005
 batch_size = 64
 latent_dim = 100
 epochs = 3
 
-#Additional hyperparameters for WGAN
+#Additional hyperparameters for WGAN : critic iterations and weight clip
 disc_iterations = 5
 weight_clip = 0.01
 
@@ -697,14 +786,16 @@ for epoch in range(epochs):
     #Uploading real image to gpu
     real_image = real_image.to(device)
 
+    #additional loop for additional critic training
     for _ in range(disc_iterations):
+
       #Generating noise vectors
       noise = torch.randn((batch_size, size_latent, 1, 1)).to(device)
     
       #Generating fake image from noise
       fake = gen2(noise)
 
-      #Train discriminator
+      ###Train discriminator###
 
 
       #Discriminator on real image
@@ -714,27 +805,36 @@ for epoch in range(epochs):
       #Discriminator on fake image
       disc_fake = disc2(fake).reshape(-1)
 
-      #Loss of discriminator
-      loss_disc = -loss_disc_real + loss_disc_fake
+      #Loss of discriminator maximizing distance but we are through a minimization algorithm
+      #Therefore we are minimizing the opposite of the value
+      loss_disc = -(torch.mean(loss_disc_real) - torch.mean(loss_disc_fake))
+
+      #adding critic loss to list and printing it
       D_losses.append(loss_disc.item())
-      print("Discriminator Loss :" + str(loss_disc))
+      print("Discriminator Loss :" + str(loss_disc.item()))
 
 
       #Discriminator Adam optimization
-      torch.autograd.set_detect_anomaly(True)
       disc.zero_grad()
+
+      #Setting retain_graph = True as we will re-utilise the fake data generated
       disc_loss.backward(retain_graph = True)
       disc_optimizer.step()
 
+      #Going through critic parameters clamping
       for parameter in disc.parameters():
         parameter.data.clamp_(-weight_clip, weight_clip)
 
-      #Train generator
+      ###Train generator###
 
       #Discriminate fake and get loss
       output = disc2(fake).reshape(-1)
+
+      #Computing generator loss
       generator_loss = criterion(output, torch.ones_like(output))
-      print("Generator Loss :" + str(generator_loss))
+      
+      #Printing and adding to list of generator loss
+      print("Generator Loss :" + str(generator_loss.item()))
       G_losses.append(generator_loss.item())
 
       #Generator Adam optimization
@@ -742,12 +842,14 @@ for epoch in range(epochs):
       generator_loss.backward()
       gen_optimizer.step()
 
+      #Adding images to list
       if batch % 100 == 0:
 
         with torch.no_grad():
           fake = gen2(init_noise).detach().cpu()
           img_list.append(utils.make_grid(fake, padding = 2, normalize = True))
       step = step + 1
+
 
 ```
 
@@ -760,7 +862,7 @@ for epoch in range(epochs):
 
 [3^] [Arjovsky M., Chintala S., Bottou L., (2017): Wasserstein GAN] (https://arxiv.org/abs/1701.07875)
 
-[4^] [WGAN Repository] (https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/GANs/3.%20WGAN/train.py)
+[4^] [WGAN Repository] (https://github.com/aladdinpersson/Machine-Learning-Collection/blob/master/ML/Pytorch/GANs/3.%20WGAN)
 
 [5^] [Godoy, D. (2022) : What are Transposed Convolutions ?] (https://towardsdatascience.com/what-are-transposed-convolutions-2d43ac1a0771#:~:text=Transposed%20convolutions%20are%20like%20the,the%20generator%20part%20of%20GANs.)
 
