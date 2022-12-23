@@ -561,6 +561,8 @@ References
 [1^]  [Inkawich, N - DCGAN Tutorial] (https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html)
 
 """
+### Pure python implementation can be found here
+### https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html
 
 #Graph of objective functions
 plt.figure(figsize = (6,6))
