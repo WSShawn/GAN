@@ -13,7 +13,7 @@ Neural Networks represent a data processing algorithm inspired by the functionin
 
 - Input layers : represents the information that is fed to the network in its raw state. This information can be numeric or images
 - Hidden layers : are destined for the data processing. The hidden layers do the computations and extract information for the data, which can come in the form of features in the case of images (shapes, edges). The further the hidden layer, the more complex its identification task is. For example, first hidden layers can recognize shapes in an image, while further hidden layers can recognize entire objects
-- Output layers : output the final predictions based on the previous layers' processing.
+- Output layers : output the final predictions based on the previous layers' processing
 
 Each layer of the mentioned layers is formed of neurons. This structure has been designed to mimick behavior of a human neuron. The neurons receive input, either from the previous layer or from the initial dataset. Afterwards, the input is processed through the multiplication with a weight (which can be seen as the dendrites of the neuron) and passed throuhg an activation function, which will provide an output. 
 
