@@ -23,7 +23,7 @@ The activation functions allow the communication between the neurons through the
 - Hyperbolic Tangent : takes any real value as input and outputs values between -1 and 1
 - Rectified Linear Unit (ReLU) function : takes any real value as input, outputs 0 if the input is negative and the value of the input if not
 
-There exists also a variation of the ReLU function, called Leaky ReLU, which instead of computing 0 if the input is negative, it computes a value given by a linear function with negative values but positive slope. The slope coefficient is defined before training.
+There exists also a variation of the ReLU function, called Leaky ReLU, which instead of computing 0 if the input is negative, it computes a value given by a linear function with negative values and negative slope. The slope coefficient is defined before training.
 
 Each neuron also has a Bias component, which has a role in enriching the representation of the input through the weights of the model. The bias represents a constant, and its presence shifts the activation function towards the positive or the negative values. In the absence of a bias, a simple matrix multiplication between the inputs and weights is effectuated. This situation can result in the overfitting over the data set.
 
