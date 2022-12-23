@@ -623,7 +623,7 @@ Here the capital PI represents the set of all joint distributions whose marginal
 
 The Discriminator in the case of WGANS takes the name of "critic". Its functioning is similar to the Discriminator we have seen in the case of GANs, but its objective function is different. While the discriminator is trained to correctly identify samples from the 2 distributions Pg and Pd, the critic is used to predict the distance between the 2 distributions.
 
-In order to implement the critic, we are taking the code of the Discriminator we have defined before and remove the Sigmoid function. We are doing so as the role of the critic is no longer to give a binary classification.
+In order to implement the critic, we are taking the code of the Discriminator we have defined before and remove the Sigmoid function. We are doing so as the role of the critic is no longer to output a value between 0 and 1.
 
 
 ```
