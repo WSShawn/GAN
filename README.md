@@ -583,7 +583,7 @@ The learning rates used here were the initial learning rates of 0.0002 given by 
 
 ![image](https://user-images.githubusercontent.com/114659655/209212613-bfcac060-5852-4f1c-bb6e-ef8f31716c7d.png)
 
-We can see this time that the 2 functions are very close together. The Generator's objective function is increasing whereas the Discriminator's loss function is decreasing, but not at the same pace as before. More training will lead to better results.
+We can see this time that the 2 functions are very close together. The Generator's objective function is increasing whereas the Discriminator's loss function is decreasing, but not at the same pace as before. A solution to this issue can be the change in learning rates as we did before. Afterwards, more training will lead to better results.
 
 The implementation of DCGANs on the MNIST dataset can be found in the file DCGAN_MNIST.ipynb file in the src/ folder.
 
